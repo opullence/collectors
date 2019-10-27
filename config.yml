@@ -1,0 +1,10 @@
+default:
+    celery_request_timeout: 10
+
+collectors:
+    paths:
+        - opulence.collectors.modules
+collectors_service:
+    worker:
+        broker_url: redis://
+        result_backend: redis://
