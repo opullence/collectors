@@ -2,6 +2,7 @@ import multiprocessing
 
 from opulence.common import configuration
 from opulence.common.plugins import PluginManager
+from opulence.common.job.utils import is_fact_or_composite
 
 configuration.load_config_from_file("config.yml")
 app = configuration.configure_celery(
@@ -11,11 +12,6 @@ app = configuration.configure_celery(
 
 manager = multiprocessing.Manager()
 available_collectors = manager.dict()
-
-
-@app.task
-def add(x, y):
-    return x + y
 
 
 @app.task(name="collectors:reload_collectors")
@@ -40,4 +36,20 @@ def collector_info(collector_name):
 @app.task(name="collectors:list_collectors")
 def list_collectors():
     global available_collectors
+
     return [name for name, _ in available_collectors.items()]
+
+
+@app.task(name="execute_collector_by_name")
+def execute_collector_by_name(collector_name, fact_or_composite):
+    global available_collectorsa
+    print("@@@", is_fact_or_composite(fact_or_composite))
+    if collector_name in available_collectors:
+        available_collectors[collector_name].run(fact_or_composite)
+    else:
+        print("NOKE")
+
+# Reload collectors at startup
+reload_collectors(flush=True)
+print("Loaded collectors:")
+print(list_collectors())

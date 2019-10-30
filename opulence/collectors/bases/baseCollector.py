@@ -1,9 +1,9 @@
-from opulence.common.job import Job, StatusCode
+# from opulence.common.job import Job, StatusCode
 from opulence.common.patterns import Composite
 from opulence.common.plugins import BasePlugin
 from opulence.common.plugins.exceptions import PluginFormatError
 from opulence.common.utils import is_list
-from opulence.facts import BaseFact
+from opulence.common.bases import BaseFact
 
 
 class BaseCollector(BasePlugin):
@@ -25,27 +25,31 @@ class BaseCollector(BasePlugin):
     def allowed_input(self):
         return self._allowed_input_
 
-    def run(self, job):
-        if not isinstance(job, Job):
-            raise TypeError(f"Expected Job argument to run(), got {type(job)}")
-        if not job.input:
-            job.status = StatusCode.empty
-            return job
+    def run(self, fact):
+        # if not isinstance(job, Job):
+        #     raise TypeError(f"Expected Job argument to run(), got {type(job)}")
+        # if not job.input:
+        #     job.status = StatusCode.empty
+        #     return job
         try:
-            job.executionClock.start()
-            job.status = StatusCode.started
+            # job.executionClock.start()
+            # job.status = StatusCode.started
+            res = self.launch(fact)
+            # job.output = self._sanitize_output(res)
 
-            job.output = self._sanitize_output(self.launch(job.input))
-            job.executionClock.stop()
+            # job.executionClock.stop()
 
-            job.status = StatusCode.finished
+            # job.status = StatusCode.finished
         except Exception as err:
-            job.status = StatusCode.error
-            job.error = str(err)
+            # job.status = StatusCode.error
+            # job.error = str(err)
             print("!!!!!!!!!!!!")
             print("Error in run():", err)
             print("!!!!!!!!!!!!")
-        return job
+            return err
+        finally:
+            # return job
+            return res
 
     @staticmethod
     def _sanitize_output(output):

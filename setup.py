@@ -8,7 +8,7 @@ with open("requirements/production.txt") as f:
 
 setup(
     name="opulence.collectors",
-    version="0.0.1",
+    version="0.0.2",
     description="Collectors service",
     long_description=readme,
     author="Opulence",
