@@ -3,7 +3,6 @@ import multiprocessing
 from opulence.common import configuration
 from opulence.common.plugins import PluginManager
 
-
 configuration.load_config_from_file("config.yml")
 app = configuration.configure_celery(
     configuration.config["collectors_service"]["worker"]
@@ -48,6 +47,7 @@ def execute_collector_by_name(collector_name, fact_or_composite):
     if collector_name in available_collectors:
         return available_collectors[collector_name].run(fact_or_composite)
     return "Collector not found"
+
 
 # Reload collectors at startup
 reload_collectors(flush=True)
