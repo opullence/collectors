@@ -1,6 +1,6 @@
 from subprocess import PIPE, Popen
 
-from opulence.collectors.bases import BaseCollector
+from opulence.common.bases.baseCollector import BaseCollector
 from opulence.common.plugins.exceptions import (
     PluginFormatError, PluginRuntimeError
 )

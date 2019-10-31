@@ -1,4 +1,4 @@
-from opulence.collectors.bases import BaseCollector
+from opulence.common.bases.baseCollector import BaseCollector
 from opulence.common.patterns import Composite
 from opulence.common.plugins.dependencies import (
     BinaryDependency, FileDependency, ModuleDependency
