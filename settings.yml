@@ -1,5 +1,8 @@
-default:
-    celery_request_timeout: 10
+log:
+  file: opulence.log
+  debug: True
+
+
 
 collectors:
     paths:

@@ -34,6 +34,7 @@ class ScriptCollector(BaseCollector):
         args = self._replace_sigil(fact)
         (return_code, stdout, stderr) = self._exec(self.script_path, *args)
         if return_code:
+            print("Error")
             raise PluginRuntimeError(stderr)
         return self.parse_result(stdout)
 

@@ -1,13 +1,16 @@
+
+import logging.config
 import multiprocessing
 
 from opulence.common import configuration
 from opulence.common.plugins import PluginManager
 
-configuration.load_config_from_file("config.yml")
+
+logger = logging.getLogger("")
+
 app = configuration.configure_celery(
     configuration.config["collectors_service"]["worker"]
 )
-
 
 manager = multiprocessing.Manager()
 available_collectors = manager.dict()
@@ -40,9 +43,12 @@ def list_collectors():
     return [name for name, _ in available_collectors.items()]
 
 
+from opulence.common.job import Result
+
+
 @app.task(name="execute_collector_by_name")
 def execute_collector_by_name(collector_name, fact_or_composite):
-    global available_collectorsa
+    global available_collectors
 
     if collector_name in available_collectors:
         return available_collectors[collector_name].run(fact_or_composite)
@@ -51,5 +57,4 @@ def execute_collector_by_name(collector_name, fact_or_composite):
 
 # Reload collectors at startup
 reload_collectors(flush=True)
-print("Loaded collectors:")
 print(list_collectors())

@@ -38,4 +38,4 @@ class example(ScriptCollector):
 
     def parse_result(self, result):
         print(f"Parsing {result}")
-        return "Nice looool"
+        return Person(firstname=result, lastname="orvoir")

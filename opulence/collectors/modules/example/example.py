@@ -30,4 +30,4 @@ class example(BaseCollector):
         pass
 
     def launch(self, fact):
-        pass
+        return Person(firstname="Example", lastname="Module")
