@@ -50,7 +50,6 @@ class ScriptCollector(BaseCollector):
         return (out.returncode, stdout, stderr)
 
     def _replace_sigil(self, facts):
-        facts = facts.get()
         args = self.script_arguments
         if not is_list(args):
             args = [args]
@@ -63,7 +62,7 @@ class ScriptCollector(BaseCollector):
                 if str(type(fact).__name__) == class_name and hasattr(
                     fact, attribute_name
                 ):
-                    return getattr(fact, attribute_name)
+                    return getattr(fact, attribute_name).value
             print(f"WARNING: Sigil ({arg}) was not replaced. This should not happen")
             return ""
 
