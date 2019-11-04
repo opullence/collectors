@@ -1,10 +1,11 @@
 from subprocess import PIPE, Popen
 
-from opulence.common.bases.baseCollector import BaseCollector
 from opulence.common.plugins.exceptions import (
     PluginFormatError, PluginRuntimeError
 )
 from opulence.common.utils import is_list
+
+from .baseCollector import BaseCollector
 
 
 class ScriptCollector(BaseCollector):

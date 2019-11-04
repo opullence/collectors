@@ -1,9 +1,13 @@
-from opulence.collectors.bases.scriptCollector import ScriptCollector
+#     ||   ................
+#     ||      ..........
+#     \/         ....
 from opulence.common.patterns import Composite
 from opulence.common.plugins.dependencies import (
     BinaryDependency, FileDependency, ModuleDependency
 )
 from opulence.facts.person import Person
+
+from ....bases.scriptCollector import ScriptCollector
 
 
 class example(ScriptCollector):

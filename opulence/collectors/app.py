@@ -28,7 +28,8 @@ def reload_collectors(flush=False):
 
 @app.task(name="collectors:collector_info")
 def collector_info(collector_name):
-    logger.info("Collector info for {collector_name}")
+    logger.info(f"Collector info for {collector_name}")
+
     if collector_name in available_collectors:
         return available_collectors[collector_name].get_info()
     return None

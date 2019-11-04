@@ -6,8 +6,8 @@ log:
 
 collectors:
     paths:
-        - opulence.collectors.modules
+        - opulence.collectors.collectors
 collectors_service:
     worker:
-        broker_url: redis://
-        result_backend: redis://
+        broker_url: redis://localhost/0
+        result_backend: redis://localhost/0

@@ -1,3 +1,3 @@
-redis==3.3.11
-opulence.common @ git+ssh://git@github.com/opullence/common.git@v0.0.4
-opulence.facts @ git+ssh://git@github.com/opullence/facts.git@v0.0.3
+redis
+opulence.common @ git+ssh://git@github.com/opullence/common.git@master
+opulence.facts @ git+ssh://git@github.com/opullence/facts.git@master
