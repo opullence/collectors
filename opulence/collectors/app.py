@@ -6,8 +6,10 @@ from opulence.common import configuration
 from opulence.common.plugins import PluginManager
 
 logger = get_task_logger(__name__)
+configuration.load_config_from_file()
+config = configuration.get_conf()
 app = configuration.configure_celery(
-    configuration.config["collectors_service"]["worker"]
+    config["collectors_service"]["worker"]
 )
 manager = multiprocessing.Manager()
 available_collectors = manager.dict()
@@ -19,7 +21,7 @@ def reload_collectors(flush=False):
     logger.info("Reload collectors")
     if flush:
         available_collectors.clear()
-    for path in configuration.config["collectors"]["paths"]:
+    for path in config["collectors"]["paths"]:
         PluginManager().discover(path)
         for plugin in PluginManager().get_plugins(path):
             if plugin.plugin_name not in available_collectors:
