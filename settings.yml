@@ -9,5 +9,5 @@ collectors:
         - opulence.collectors.collectors
 collectors_service:
     worker:
-        broker_url: redis://localhost/0
-        result_backend: redis://localhost/0
+        broker_url: redis://redis/0
+        result_backend: redis://redis/0

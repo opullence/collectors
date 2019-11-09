@@ -1,5 +1,6 @@
 import unittest
 
+from opulence.common.plugins import PluginStatus
 from opulence.collectors import app
 from opulence.facts.person import Person
 
@@ -27,7 +28,7 @@ class TestApp(unittest.TestCase):
                     "author": "Louis",
                     "category": "BaseCollector",
                     "description": "This is an example collector",
-                    "status": 10,
+                    "status": PluginStatus.READY,
                     "error": "",
                     "canonical_name": "opulence.collectors.collectors.dummy.Dummy",
                 },

@@ -1,3 +1,3 @@
 redis
-opulence.common @ git+ssh://git@github.com/opullence/common.git@master
-opulence.facts @ git+ssh://git@github.com/opullence/facts.git@master
+opulence.common @ git+https://gitlab.com/opulence/common.git@master
+opulence.facts @ git+https://gitlab.com/opulence/facts.git@master

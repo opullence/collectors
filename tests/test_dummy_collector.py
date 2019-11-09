@@ -1,5 +1,7 @@
 import unittest
 
+from opulence.common.plugins import PluginStatus
+
 from opulence.collectors.collectors.dummy import Dummy
 from opulence.facts.person import Person
 
@@ -18,7 +20,7 @@ class TestDummy(unittest.TestCase):
                 "author": "Louis",
                 "category": "BaseCollector",
                 "description": "This is an example collector",
-                "status": 10,
+                "status": PluginStatus.READY,
                 "error": "",
                 "canonical_name": "opulence.collectors.collectors.dummy.Dummy",
             },
