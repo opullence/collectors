@@ -14,9 +14,9 @@ class ScriptCollector(BaseCollector):
 
     def __init__(self, *args, **kwargs):
         if not self._script_path_:
-            raise PluginFormatError(f"Incorrect script_path")
+            raise PluginFormatError("Incorrect script_path")
         if not self._script_arguments_:
-            raise PluginFormatError(f"Incorrect script_arguments")
+            raise PluginFormatError("Incorrect script_arguments")
         super().__init__()
 
     @property
@@ -40,8 +40,10 @@ class ScriptCollector(BaseCollector):
 
     def parse_result(self, result):
         raise NotImplementedError(
-            f"Method parse_result() \
-            should be defined for Plugin <{type(self).__name__}>"
+            "Method parse_result() should be defined for Plugin \
+            <{}>".format(
+                type(self).__name__
+            )
         )
 
     @staticmethod
@@ -64,7 +66,12 @@ class ScriptCollector(BaseCollector):
                     fact, attribute_name
                 ):
                     return getattr(fact, attribute_name).value
-            print(f"WARNING: Sigil ({arg}) was not replaced. This should not happen")
+            print(
+                "WARNING: Sigil ({}) was not replaced. \
+                This should not happen".format(
+                    arg
+                )
+            )
             return ""
 
         def is_sigil(arg):

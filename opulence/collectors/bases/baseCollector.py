@@ -13,7 +13,7 @@ class BaseCollector(BasePlugin):
     def __init__(self, *args, **kwargs):
         if not self._allowed_input_:
             raise PluginFormatError(
-                f"<{type(self).__name__}> needs at least one allowed_input"
+                "<{}> needs at least one allowed_input".format(type(self).__name__)
             )
         super().__init__()
 
@@ -68,7 +68,10 @@ class BaseCollector(BasePlugin):
 
     def launch(self, fact):
         raise NotImplementedError(
-            f"Method launch() should be defined for Plugin <{type(self).__name__}>"
+            "Method launch() should be defined for Plugin \
+            <{}>".format(
+                type(self).__name__
+            )
         )
 
     def get_allowed_input_as_list(self):
