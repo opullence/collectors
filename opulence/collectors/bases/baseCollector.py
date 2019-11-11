@@ -1,4 +1,4 @@
-from opulence.common.facts import BaseFact
+# from opulence.common.facts import BaseFact
 from opulence.common.job import Result, StatusCode
 from opulence.common.patterns import is_composite
 from opulence.common.plugins import BasePlugin
@@ -58,13 +58,13 @@ class BaseCollector(BasePlugin):
         finally:
             return result
 
-    @staticmethod
-    def _sanitize_output(output):
-        if not output:
-            return []
-        if not is_list(output):
-            output = [output]
-        return [o for o in output if isinstance(o, BaseFact)]  # and o.is_valid()]
+    # @staticmethod
+    # def _sanitize_output(output):
+    #     if not output:
+    #         return []
+    #     if not is_list(output):
+    #         output = [output]
+    #     return [o for o in output if isinstance(o, BaseFact)]  # and o.is_valid()]
 
     def launch(self, fact):
         raise NotImplementedError(
