@@ -30,31 +30,36 @@ class BaseCollector(BasePlugin):
         )
 
     def run(self, facts):
-        result = Result(input=facts)
+        result = Result(input=facts, status=StatusCode.ready)
 
-        if result.input is None:
+        inp = result.input.get(force_array=True)
+        if not inp:
             result.status = StatusCode.empty, "No input provided"
             return result
+        for i in inp:
+            if not i.is_valid():
+                result.status = StatusCode.invalid_input, "Invalid input provided: " + str(i.get_info())
+                return result
         try:
-            # result.executionClock.start()
+            result.clock.start()
             result.status = StatusCode.started
 
-            # result.output = self._sanitize_output(self.launch(result.input.get()))
-            result.output = self.launch(result.input.get())
-            # result.executionClock.stop()
+            result.output = self.launch(result.input.get(force_array=True))
+
+            result.clock.stop()
             result.status = StatusCode.finished
 
         except Exception as err:
-            result.status = StatusCode.error, str(err)
-            print("!!!!!!!!!!!!")
             print("Error in run():", err)
-            print("!!!!!!!!!!!!")
+            result.status = StatusCode.error, str(err)
         finally:
-            print("Run output:", result)
             return result
+
 
     @staticmethod
     def _sanitize_output(output):
+        if not output:
+            return []
         if not is_list(output):
             output = [output]
         return [o for o in output if isinstance(o, BaseFact)]  # and o.is_valid()]

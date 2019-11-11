@@ -17,7 +17,7 @@ class Dummy(BaseCollector):
     _dependencies_ = (
         BinaryDependency("ls"),
         ModuleDependency("pip"),
-        FileDependency("/bin/ls"),
+        FileDependency("/tmfsdp"),
     )
 
     ###############

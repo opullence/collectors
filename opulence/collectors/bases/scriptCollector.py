@@ -33,7 +33,9 @@ class ScriptCollector(BaseCollector):
 
     def launch(self, fact):
         args = self._replace_sigil(fact)
+        print("1")
         (return_code, stdout, stderr) = self._exec(self.script_path, *args)
+        print("12")
         if return_code:
             print("Error")
             raise PluginRuntimeError(stderr)
