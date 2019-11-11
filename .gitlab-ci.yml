@@ -27,7 +27,7 @@ python35:
 python36:
   image: python:3.6
   stage: test
-  script: 
+  script:
   - tox -e py36
   - pip install codecov
   - codecov --token=$CODECOV_TOKEN

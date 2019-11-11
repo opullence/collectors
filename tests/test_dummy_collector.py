@@ -1,8 +1,7 @@
 import unittest
 
-from opulence.common.plugins import PluginStatus
-
 from opulence.collectors.collectors.dummy import Dummy
+from opulence.common.plugins import PluginStatus
 from opulence.facts.person import Person
 
 
@@ -32,6 +31,10 @@ class TestDummy(unittest.TestCase):
     def test_dummy_collector_exec(self):
         john = Person(firstname="john", lastname="snow")
         collector = Dummy()
-        res = collector.launch(john)
+        res = collector.launch([john])
         self.assertEqual(res.firstname.value, "johnDUMMY")
         self.assertEqual(res.lastname.value, "snowDUMMY")
+
+
+if __name__ == "__main__":
+    unittest.main()

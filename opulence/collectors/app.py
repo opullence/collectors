@@ -8,9 +8,7 @@ from opulence.common.plugins import PluginManager
 logger = get_task_logger(__name__)
 configuration.load_config_from_file()
 config = configuration.get_conf()
-app = configuration.configure_celery(
-    config["collectors_service"]["worker"]
-)
+app = configuration.configure_celery(config["collectors_service"]["worker"])
 manager = multiprocessing.Manager()
 available_collectors = manager.dict()
 

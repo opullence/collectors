@@ -38,7 +38,10 @@ class BaseCollector(BasePlugin):
             return result
         for i in inp:
             if not i.is_valid():
-                result.status = StatusCode.invalid_input, "Invalid input provided: " + str(i.get_info())
+                result.status = (
+                    StatusCode.invalid_input,
+                    "Invalid input provided: " + str(i.get_info()),
+                )
                 return result
         try:
             result.clock.start()
@@ -54,7 +57,6 @@ class BaseCollector(BasePlugin):
             result.status = StatusCode.error, str(err)
         finally:
             return result
-
 
     @staticmethod
     def _sanitize_output(output):
