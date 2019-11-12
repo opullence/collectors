@@ -8,9 +8,7 @@ from opulence.common.plugins import PluginManager
 logger = get_task_logger(__name__)
 configuration.load_config_from_file()
 config = configuration.get_conf()
-app = configuration.configure_celery(
-    config["collectors_service"]["worker"]
-)
+app = configuration.configure_celery(config["collectors_service"]["worker"])
 manager = multiprocessing.Manager()
 available_collectors = manager.dict()
 
@@ -30,7 +28,7 @@ def reload_collectors(flush=False):
 
 @app.task(name="collectors:collector_info")
 def collector_info(collector_name):
-    logger.info(f"Collector info for {collector_name}")
+    logger.info("Collector info for {}".format(collector_name))
 
     if collector_name in available_collectors:
         return available_collectors[collector_name].get_info()
@@ -47,7 +45,12 @@ def list_collectors():
 @app.task(name="execute_collector_by_name")
 def execute_collector_by_name(collector_name, fact_or_composite):
     global available_collectors
-    logger.info(f"Execute collector {collector_name} with {type(fact_or_composite)}")
+    logger.info(
+        "Execute collector {} with \
+        {}".format(
+            collector_name, type(fact_or_composite)
+        )
+    )
     if collector_name in available_collectors:
         return available_collectors[collector_name].run(fact_or_composite)
     return "Collector not found"

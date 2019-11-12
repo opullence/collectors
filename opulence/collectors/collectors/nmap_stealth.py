@@ -1,10 +1,9 @@
 import re
 
 from opulence.common.plugins.dependencies import BinaryDependency
-
 from opulence.facts.domain import Domain
-from opulence.facts.port import Port
 from opulence.facts.ip import IPv4
+from opulence.facts.port import Port
 
 from ..bases.scriptCollector import ScriptCollector
 
@@ -17,9 +16,7 @@ class NmapStealth(ScriptCollector):
     _description_ = "Performs nmap TCP scan (-sT)"
     _author_ = "Louis"
     _version_ = 1
-    _dependencies_ = [
-        BinaryDependency("nmap")
-    ]
+    _dependencies_ = [BinaryDependency("nmap")]
 
     ###############
     # Collector attributes
@@ -31,12 +28,20 @@ class NmapStealth(ScriptCollector):
     # Script attributes
     ###############
     _script_path_ = "nmap"
-    _script_arguments_ = ["-sT", "--privileged", "-oX", "-", "$Domain.fqdn$", "$IPv4.address$"]
-
+    _script_arguments_ = [
+        "-sT",
+        "--privileged",
+        "-oX",
+        "-",
+        "$Domain.fqdn$",
+        "$IPv4.address$",
+    ]
 
     def parse_result(self, result):
 
-        found_ports = re.findall('protocol="(.+?)" portid="(.+?)"><state state="(.+?)"', result)
+        found_ports = re.findall(
+            'protocol="(.+?)" portid="(.+?)"><state state="(.+?)"', result
+        )
         if not found_ports:
             return
         res = []

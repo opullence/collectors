@@ -1,6 +1,3 @@
-from opulence.common.plugins.dependencies import (
-    BinaryDependency, FileDependency, ModuleDependency
-)
 from opulence.facts.person import Person
 
 from ..bases import BaseCollector
@@ -14,11 +11,6 @@ class Dummy(BaseCollector):
     _description_ = "This is an example collector"
     _author_ = "Louis"
     _version_ = 1
-    _dependencies_ = (
-        BinaryDependency("ls"),
-        ModuleDependency("pip"),
-        FileDependency("/tmfsdp"),
-    )
 
     ###############
     # Module attributes
@@ -31,6 +23,6 @@ class Dummy(BaseCollector):
 
     def launch(self, fact):
         return Person(
-            firstname=fact.firstname.value + "DUMMY",
-            lastname=fact.lastname.value + "DUMMY",
+            firstname=fact[0].firstname.value + "DUMMY",
+            lastname=fact[0].lastname.value + "DUMMY",
         )

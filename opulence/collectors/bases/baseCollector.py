@@ -1,4 +1,4 @@
-from opulence.common.facts import BaseFact
+# from opulence.common.facts import BaseFact
 from opulence.common.job import Result, StatusCode
 from opulence.common.patterns import is_composite
 from opulence.common.plugins import BasePlugin
@@ -13,7 +13,7 @@ class BaseCollector(BasePlugin):
     def __init__(self, *args, **kwargs):
         if not self._allowed_input_:
             raise PluginFormatError(
-                f"<{type(self).__name__}> needs at least one allowed_input"
+                "<{}> needs at least one allowed_input".format(type(self).__name__)
             )
         super().__init__()
 
@@ -38,7 +38,10 @@ class BaseCollector(BasePlugin):
             return result
         for i in inp:
             if not i.is_valid():
-                result.status = StatusCode.invalid_input, "Invalid input provided: " + str(i.get_info())
+                result.status = (
+                    StatusCode.invalid_input,
+                    "Invalid input provided: " + str(i.get_info()),
+                )
                 return result
         try:
             result.clock.start()
@@ -55,18 +58,20 @@ class BaseCollector(BasePlugin):
         finally:
             return result
 
-
-    @staticmethod
-    def _sanitize_output(output):
-        if not output:
-            return []
-        if not is_list(output):
-            output = [output]
-        return [o for o in output if isinstance(o, BaseFact)]  # and o.is_valid()]
+    # @staticmethod
+    # def _sanitize_output(output):
+    #     if not output:
+    #         return []
+    #     if not is_list(output):
+    #         output = [output]
+    #     return [o for o in output if isinstance(o, BaseFact)]  # and o.is_valid()]
 
     def launch(self, fact):
         raise NotImplementedError(
-            f"Method launch() should be defined for Plugin <{type(self).__name__}>"
+            "Method launch() should be defined for Plugin \
+            <{}>".format(
+                type(self).__name__
+            )
         )
 
     def get_allowed_input_as_list(self):
