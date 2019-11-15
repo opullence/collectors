@@ -1,12 +1,17 @@
-log:
-  file: opulence.log
-  debug: False
+default:
+  DEBUG: true
+  COLLECTORS_PATHS:
+    - opulence.collectors.collectors
+  CELERY_WORKER:
+    broker_url: redis://localhost/0
+    result_backend: redis://localhost/0
 
+development:
+  DEBUG: true
 
-collectors:
-    paths:
-        - opulence.collectors.collectors
-collectors_service:
-    worker:
-        broker_url: redis://redis/0
-        result_backend: redis://redis/0
+production:
+  DEBUG: false
+  CELERY_WORKER:
+    broker_url: redis://redis/0
+    result_backend: redis://redis/0
+

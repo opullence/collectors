@@ -1,17 +1,15 @@
 import multiprocessing
 
 from celery.utils.log import get_task_logger
+from dynaconf import settings
 
 from opulence.common import configuration
 from opulence.common.plugins import PluginManager
 
 logger = get_task_logger(__name__)
 
-conf = {
-    "broker_url": "redis://redis/0",
-    "result_backend": "redis://redis/0"
-}
-app = configuration.configure_celery(conf)
+
+app = configuration.configure_celery(settings.CELERY_WORKER)
 manager = multiprocessing.Manager()
 available_collectors = manager.dict()
 
@@ -22,7 +20,7 @@ def reload_collectors(flush=False):
     logger.info("Reload collectors")
     if flush:
         available_collectors.clear()
-    for path in ["opulence.collectors.collectors"]:
+    for path in settings.COLLECTORS_PATHS:
         PluginManager().discover(path)
         for plugin in PluginManager().get_plugins(path):
             if plugin.plugin_name not in available_collectors:
