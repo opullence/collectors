@@ -37,6 +37,8 @@ def _exec_collector(collector):
         print("@ Got result: ", result.status)
         for i in result.output:
             print("@\t->", i)
+            for f in i.get_fields():
+                print("@\t\t->", f, ":", getattr(i, f).value)
 
 
 def main():
