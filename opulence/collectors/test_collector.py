@@ -1,7 +1,7 @@
 import sys
+
 from dynaconf import settings
 
-from opulence.common import configuration
 from opulence.common.plugins import PluginManager
 
 
@@ -16,7 +16,8 @@ def _exec_collector(cls):
     print("|")
     print("| INPUT: {}".format(cls.allowed_input))
     print(" ==================================== ")
-    pass
+
+
 def main():
     if len(sys.argv) <= 1:
         return print("Give me a plugin_name to execute")
@@ -25,7 +26,7 @@ def main():
         PluginManager().discover(path)
         for plugin in PluginManager().get_plugins(path):
             if plugin.plugin_name == sys.argv[1]:
-                _exec   _collector(plugin)
+                _exec_collector(plugin)
                 return "DONE executing {}".format(plugin.plugin_name)
             else:
                 print(" - skipped {}".format(plugin.plugin_name))
