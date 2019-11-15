@@ -3,7 +3,7 @@ from opulence.common.job import Result, StatusCode
 from opulence.common.patterns import is_composite
 from opulence.common.plugins import BasePlugin
 from opulence.common.plugins.exceptions import PluginFormatError
-from opulence.common.utils import is_list
+from opulence.common.utils import is_list, is_iterable
 
 
 class BaseCollector(BasePlugin):
@@ -46,9 +46,10 @@ class BaseCollector(BasePlugin):
         try:
             result.clock.start()
             result.status = StatusCode.started
-
-            result.output = self.launch(result.input.get(force_array=True))
-
+            output = self.launch(result.input.get(force_array=True))
+            if is_iterable(output):
+                output = list(output)
+            result.output = output
             result.clock.stop()
             result.status = StatusCode.finished
 
