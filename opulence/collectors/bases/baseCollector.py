@@ -78,9 +78,9 @@ class BaseCollector(BasePlugin):
         ret = []
         for input in self.allowed_input:
             if is_composite(input):
-                ret.append([i.__name__ for i in input.elements])
+                ret.append([i for i in input.elements])
             else:
-                ret.append(input.__name__)
+                ret.append(input)
         return ret
 
     def get_info(self):
