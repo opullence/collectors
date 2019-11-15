@@ -3,13 +3,13 @@ import multiprocessing
 from celery.utils.log import get_task_logger
 from dynaconf import settings
 
-from opulence.common import configuration
+from opulence.common.configuration import configure_celery
 from opulence.common.plugins import PluginManager
 
 logger = get_task_logger(__name__)
 
 
-app = configuration.configure_celery(settings.CELERY_WORKER)
+app = configure_celery(settings.CELERY_WORKER)
 manager = multiprocessing.Manager()
 available_collectors = manager.dict()
 
