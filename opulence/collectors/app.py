@@ -43,7 +43,7 @@ def list_collectors():
     return [name for name, _ in available_collectors.items()]
 
 
-@app.task(name="execute_collector_by_name")
+@app.task(name="collectors:execute_collector_by_name")
 def execute_collector_by_name(collector_name, fact_or_composite):
     global available_collectors
     logger.info(
@@ -59,4 +59,4 @@ def execute_collector_by_name(collector_name, fact_or_composite):
 
 # Reload collectors at startup
 reload_collectors(flush=True)
-print(list_collectors())
+print("Loaded:", list_collectors())

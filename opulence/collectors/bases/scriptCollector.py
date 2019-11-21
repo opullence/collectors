@@ -1,3 +1,4 @@
+import re
 from subprocess import PIPE, Popen
 
 from opulence.common.plugins.exceptions import (
@@ -48,6 +49,7 @@ class ScriptCollector(BaseCollector):
 
     @staticmethod
     def _exec(*cmd):
+        print("ScriptCollector: launch command {}".format(cmd))
         out = Popen(cmd, stdout=PIPE, stderr=PIPE)
         stdout, stderr = (x.strip().decode() for x in out.communicate())
         return (out.returncode, stdout, stderr)
@@ -57,24 +59,28 @@ class ScriptCollector(BaseCollector):
         if not is_list(args):
             args = [args]
 
+        def find_sigil(arg):
+            result = re.search("\\$(.*)\\$", arg)
+            if result is not None:
+                return result.group(1)
+            return result
+
         def replace(arg):
-            value = arg[1:-1]
-            class_name = value.split(".")[0]
-            attribute_name = value.split(".")[1]
+            found = find_sigil(arg)
+            if found is None:
+                return arg
+            value = found
+            try:
+                (class_name, attribute_name) = value.split(".")
+            except ValueError:
+                return arg
             for fact in facts:
                 if str(type(fact).__name__) == class_name and hasattr(
                     fact, attribute_name
                 ):
-                    return getattr(fact, attribute_name).value
-            print(
-                "WARNING: Sigil ({}) was not replaced. \
-                This should not happen".format(
-                    arg
-                )
-            )
-            return ""
+                    replaced_value = getattr(fact, attribute_name).value
+                    value_to_replace = "${}$".format(value)
+                    return arg.replace(value_to_replace, replaced_value)
+            return arg
 
-        def is_sigil(arg):
-            return arg.startswith("$") and arg.endswith("$")
-
-        return [replace(arg) if is_sigil(arg) else arg for arg in args]
+        return [replace(arg) for arg in args]

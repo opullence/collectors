@@ -5,17 +5,40 @@ from dynaconf import settings
 from opulence.common.plugins import PluginManager
 
 
-def _exec_collector(cls):
+def print_state(cls):
+    print("----------------------------------------------")
     if not cls.errored:
         print("* Name: {}".format(cls.plugin_name))
         print("* Description: {}".format(cls.plugin_description))
         print("* Version: {}".format(cls.plugin_version))
         print("* Category: {}".format(cls.plugin_category))
-    print(" ==================================== ")
-    print("| STATUS: {}".format(cls.status))
-    print("|")
-    print("| INPUT: {}".format(cls.allowed_input))
-    print(" ==================================== ")
+        print("\t-----------")
+
+    print("\n* STATUS: {}".format(cls.status), " **")
+    print("* INPUT: {}".format(cls.allowed_input), " **")
+    print("----------------------------------------------")
+
+
+def _exec_collector(collector):
+    print_state(collector)
+    allowed_input = collector.get_allowed_input_as_list()
+    test_inputs = []
+    for input in allowed_input:
+        test_input = {}
+        for i in input().get_fields():
+            test_input.update({i: "test-{}".format(i)})
+        test_inputs.append(input(**test_input))
+
+    for input in test_inputs:
+        print("\n+ Running collector with input: ", input)
+        print("+\t -> ", input.get_fields())
+
+        result = collector.run(input)
+        print("@ Got result: ", result.status)
+        for i in result.output:
+            print("@\t->", i)
+            for f in i.get_fields():
+                print("@\t\t->", f, ":", getattr(i, f).value)
 
 
 def main():

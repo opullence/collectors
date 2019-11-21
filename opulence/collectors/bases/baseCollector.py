@@ -3,7 +3,7 @@ from opulence.common.job import Result, StatusCode
 from opulence.common.patterns import is_composite
 from opulence.common.plugins import BasePlugin
 from opulence.common.plugins.exceptions import PluginFormatError
-from opulence.common.utils import is_list
+from opulence.common.utils import is_list, is_iterable
 
 
 class BaseCollector(BasePlugin):
@@ -46,9 +46,10 @@ class BaseCollector(BasePlugin):
         try:
             result.clock.start()
             result.status = StatusCode.started
-
-            result.output = self.launch(result.input.get(force_array=True))
-
+            output = self.launch(result.input.get(force_array=True))
+            if is_iterable(output):
+                output = list(output)
+            result.output = output
             result.clock.stop()
             result.status = StatusCode.finished
 
@@ -74,18 +75,25 @@ class BaseCollector(BasePlugin):
             )
         )
 
-    def get_allowed_input_as_list(self):
+    def get_allowed_input_as_list(self, full_data=False):
         ret = []
         for input in self.allowed_input:
             if is_composite(input):
-                ret.append([i.__name__ for i in input.elements])
+                if full_data:
+                    ret.append([i().get_info() for i in input.elements])
+                else:
+                    ret.append([i for i in input.elements])
             else:
-                ret.append(input.__name__)
+                if full_data:
+                    ret.append(input().get_info())
+                else:
+                    ret.append(input)
         return ret
 
     def get_info(self):
+
         data = {
             "active_scanning": self._active_scanning_,
-            "allowed_input": self.get_allowed_input_as_list(),
+            "allowed_input": self.get_allowed_input_as_list(full_data=True),
         }
         return {**super().get_info(), **data}
