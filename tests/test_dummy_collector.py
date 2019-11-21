@@ -24,7 +24,7 @@ class TestDummy(unittest.TestCase):
                 "canonical_name": "opulence.collectors.collectors.dummy.Dummy",
             },
             "active_scanning": False,
-            "allowed_input": [Person],
+            "allowed_input": [Person().get_info()],
         }
         self.assertEqual(collector.get_info(), should_be)
 

@@ -3,7 +3,7 @@ from opulence.common.job import Result, StatusCode
 from opulence.common.patterns import is_composite
 from opulence.common.plugins import BasePlugin
 from opulence.common.plugins.exceptions import PluginFormatError
-from opulence.common.utils import is_list, is_iterable
+from opulence.common.utils import is_iterable, is_list
 
 
 class BaseCollector(BasePlugin):
@@ -29,27 +29,40 @@ class BaseCollector(BasePlugin):
             else [self._allowed_input_]
         )
 
+    @staticmethod
+    def _sanitize_input(input):
+        if not input:
+            return True, (StatusCode.empty, "No input provided")
+        for i in input:
+            if not i.is_valid():
+                return (
+                    True,
+                    (
+                        StatusCode.invalid_input,
+                        "Invalid input provided: " + str(i.get_info()),
+                    ),
+                )
+        return False, None
+
+    @staticmethod
+    def _sanitize_output(output):
+        if is_iterable(output):
+            output = list(output)
+        return output
+        # return [ out for out in output if isinstance(o, BaseFact) and o.is_valid()]
+
     def run(self, facts):
         result = Result(input=facts, status=StatusCode.ready)
-
-        inp = result.input.get(force_array=True)
-        if not inp:
-            result.status = StatusCode.empty, "No input provided"
+        ret, state = self._sanitize_input(result.input.get(force_array=True))
+        if ret:
+            result.status = state
             return result
-        for i in inp:
-            if not i.is_valid():
-                result.status = (
-                    StatusCode.invalid_input,
-                    "Invalid input provided: " + str(i.get_info()),
-                )
-                return result
         try:
             result.clock.start()
             result.status = StatusCode.started
             output = self.launch(result.input.get(force_array=True))
-            if is_iterable(output):
-                output = list(output)
-            result.output = output
+
+            result.output = self._sanitize_output(output)
             result.clock.stop()
             result.status = StatusCode.finished
 
@@ -58,14 +71,6 @@ class BaseCollector(BasePlugin):
             result.status = StatusCode.error, str(err)
         finally:
             return result
-
-    # @staticmethod
-    # def _sanitize_output(output):
-    #     if not output:
-    #         return []
-    #     if not is_list(output):
-    #         output = [output]
-    #     return [o for o in output if isinstance(o, BaseFact)]  # and o.is_valid()]
 
     def launch(self, fact):
         raise NotImplementedError(
