@@ -28,23 +28,26 @@ def _exec_collector(collector):
         for i in input().get_fields():
             test_input.update({i: "test-{}".format(i)})
         test_inputs.append(input(**test_input))
-
     for input in test_inputs:
         print("\n+ Running collector with input: ", input)
         print("+\t -> ", input.get_fields())
-
         result = collector.run(input)
         print("@ Got result: ", result.status)
         for i in result.output:
-            print("@\t->", i)
+            print("@-----------------\n@\t->", i)
             for f in i.get_fields():
                 print("@\t\t->", f, ":", getattr(i, f).value)
 
 
 def main():
     if len(sys.argv) <= 1:
-        return print("Give me a plugin_name to execute")
-
+        print("Give me a collector name to execute!\n")
+        print("Collectors loaded:")
+        for path in settings.COLLECTORS_PATHS:
+            PluginManager().discover(path)
+            for plugin in PluginManager().get_plugins(path):
+                print("\t{}".format(plugin.plugin_name))
+        return
     for path in settings.COLLECTORS_PATHS:
         PluginManager().discover(path)
         for plugin in PluginManager().get_plugins(path):
@@ -56,4 +59,4 @@ def main():
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    main()

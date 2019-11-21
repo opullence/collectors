@@ -19,7 +19,7 @@ setup(
     entry_points={
         "console_scripts": [
                 "opulence-collectors=opulence.collectors.__main__:main",
-                "opulence-try_collector=opulence.collectors.test_collector:main"
+                "opulence-try_collector=opulence.collectors.scripts.test_collector:main"
             ]
     },
     install_requires=requirements,

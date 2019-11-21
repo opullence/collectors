@@ -61,13 +61,12 @@ class BaseCollector(BasePlugin):
             result.clock.start()
             result.status = StatusCode.started
             output = self.launch(result.input.get(force_array=True))
-
-            result.output = self._sanitize_output(output)
             result.clock.stop()
+            result.output = self._sanitize_output(output)
             result.status = StatusCode.finished
-
         except Exception as err:
             print("Error in run():", err)
+            result.clock.stop()
             result.status = StatusCode.error, str(err)
         finally:
             return result
