@@ -12,8 +12,8 @@ class NmapStealth(ScriptCollector):
     ###############
     # Plugin attributes
     ###############
-    _name_ = "Nmap stealth scan"
-    _description_ = "Performs nmap TCP stealth scan (-sS)"
+    _name_ = "Nmap TCP connect"
+    _description_ = "Performs nmap TCP connect scan (-sT)"
     _author_ = "Louis"
     _version_ = 1
     _dependencies_ = [BinaryDependency("nmap")]
@@ -29,7 +29,7 @@ class NmapStealth(ScriptCollector):
     ###############
     _script_path_ = "nmap"
     _script_arguments_ = [
-        "-sS",
+        "-sT",
         "-oX",
         "-",
         "$Domain.fqdn$",

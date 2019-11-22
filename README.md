@@ -93,3 +93,23 @@ In a python shell, run the following commands
 >>> sync_call(app.app, "collectors:reload_collectors", 10)
 >>> sync_call(app.app, "collectors:list_collectors", 10)
 ```
+
+
+## Working example with nmap:
+
+```
+
+>>> from opulence.facts import Domain
+>>> from opulence.facts import IPv4
+>>> from opulence.collectors import app
+Loaded: ['dummy collector', 'Hacker target', 'Nmap stealth scan', 'Nmap TCP connect', 'Profiler', 'exampleScriptModule']
+>>> domain = Domain(fqdn="facebook.fr")
+>>> ip = IPv4(address="216.58.204.99")
+>>> res = app.execute_collector_by_name("Nmap TCP connect", ip)
+ScriptCollector: launch command ('nmap', '-sT', '-oX', '-', '216.58.204.99')
+>>> res.status
+{'status': 40, 'code': 'Finished', 'error': None}
+>>> res.output
+[<opulence.facts.port.Port object at 0x7f21f5213710>, <opulence.facts.port.Port object at 0x7f21f5213828>]
+
+```

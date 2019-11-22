@@ -73,7 +73,7 @@ class ScriptCollector(BaseCollector):
             try:
                 (class_name, attribute_name) = value.split(".")
             except ValueError:
-                return arg
+                return None
             for fact in facts:
                 if str(type(fact).__name__) == class_name and hasattr(
                     fact, attribute_name
@@ -81,6 +81,11 @@ class ScriptCollector(BaseCollector):
                     replaced_value = getattr(fact, attribute_name).value
                     value_to_replace = "${}$".format(value)
                     return arg.replace(value_to_replace, replaced_value)
-            return arg
+            return None
 
-        return [replace(arg) for arg in args]
+        res = []
+        for arg in args:
+            replaced = replace(arg)
+            if replaced is not None:
+                res.append(replaced)
+        return res
