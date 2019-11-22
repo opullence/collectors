@@ -8,7 +8,7 @@ from opulence.facts.port import Port
 from ..bases.scriptCollector import ScriptCollector
 
 
-class NmapStealth(ScriptCollector):
+class NmapTCPConnect(ScriptCollector):
     ###############
     # Plugin attributes
     ###############

@@ -22,7 +22,7 @@ class NmapStealth(ScriptCollector):
     # Collector attributes
     ###############
     _allowed_input_ = (Domain, IPv4)
-    _active_scanning_ = True
+    _active_scanning_ = False
 
     ###############
     # Script attributes
