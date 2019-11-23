@@ -1,13 +1,13 @@
 import unittest
 
-from opulence.common.plugins import exceptions
-from opulence.common.job import StatusCode
 from opulence.collectors.bases import BaseCollector
-from opulence.facts.person import Person
+from opulence.common.job import StatusCode
 from opulence.common.patterns import Composite
+from opulence.common.plugins import exceptions
+from opulence.facts.person import Person
+
 
 class TestBaseCollector(unittest.TestCase):
-
     def test_no_allowed_input(self):
         class Dummy(BaseCollector):
             _name_ = "dummy collector"
@@ -16,9 +16,9 @@ class TestBaseCollector(unittest.TestCase):
             _version_ = 1
             _allowed_input_ = []
 
-
             def launch(self, fact):
                 return "done"
+
         with self.assertRaises(exceptions.PluginFormatError) as exc:
             Dummy()
 
@@ -42,11 +42,9 @@ class TestBaseCollector(unittest.TestCase):
             _version_ = 1
             _allowed_input_ = Person
 
-
         d = Dummy()
         res = d.run("nope")
         self.assertEqual(res.status["status"], StatusCode.empty)
-
 
     def test_run_invalid(self):
         class Dummy(BaseCollector):
@@ -55,7 +53,7 @@ class TestBaseCollector(unittest.TestCase):
             _author_ = "Louis"
             _version_ = 1
             _allowed_input_ = Person
-            
+
             def launch(self, fact):
                 return "done"
 
@@ -78,7 +76,6 @@ class TestBaseCollector(unittest.TestCase):
         res = d.run(Person(firstname="john", lastname="snow"))
         self.assertEqual(res.status["status"], StatusCode.error)
         self.assertEqual(res.status["error"], "yeah")
-
 
     def test_run_collector_with_composite(self):
         class Dummy(BaseCollector):

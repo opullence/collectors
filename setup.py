@@ -18,9 +18,9 @@ setup(
     packages=find_namespace_packages(include=["opulence.*"]),
     entry_points={
         "console_scripts": [
-                "opulence-collectors=opulence.collectors.__main__:main",
-                "opulence-try_collector=opulence.collectors.scripts.test_collector:main"
-            ]
+            "opulence-collectors=opulence.collectors.__main__:main",
+            "opulence-try_collector=opulence.collectors.scripts.test_collector:main",
+        ]
     },
     install_requires=requirements,
     python_requires=">=3.6.*, <4",

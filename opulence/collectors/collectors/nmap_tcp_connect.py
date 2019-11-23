@@ -28,13 +28,7 @@ class NmapTCPConnect(ScriptCollector):
     # Script attributes
     ###############
     _script_path_ = "nmap"
-    _script_arguments_ = [
-        "-sT",
-        "-oX",
-        "-",
-        "$Domain.fqdn$",
-        "$IPv4.address$",
-    ]
+    _script_arguments_ = ["-sT", "-oX", "-", "$Domain.fqdn$", "$IPv4.address$"]
 
     def parse_result(self, result):
 
