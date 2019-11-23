@@ -35,12 +35,10 @@ class NmapOSScan(ScriptCollector):
         "$IPv4.address$"]
 
     def parse_result(self, result):
-        print("GOOOOOOOOOOO")
         found_os = re.findall(
             '<osclass type="(.+?)" vendor="(.+?)" osfamily="(.+?)" osgen="(.+?)" accuracy="(.+?)">', #NOQA
             result,
         )
-        print("@@@@", found_os)
         if not found_os:
             return
         res = []
