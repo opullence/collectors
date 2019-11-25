@@ -1,4 +1,5 @@
 from opulence.facts.person import Person
+from opulence.common.patterns import Composite
 
 from ..bases import BaseCollector
 
@@ -15,7 +16,7 @@ class Dummy(BaseCollector):
     ###############
     # Module attributes
     ###############
-    _allowed_input_ = Person
+    _allowed_input_ = (Person, Composite(Person, Person))
 
     @classmethod
     def verify(cls):

@@ -52,7 +52,10 @@ class BaseCollector(BasePlugin):
         # return [ out for out in output if isinstance(o, BaseFact) and o.is_valid()]
 
     def run(self, facts):
-        result = Result(input=facts, status=StatusCode.ready)
+        result = Result(
+            input=facts,
+            collector_data=self.get_info(),
+            status=StatusCode.ready)
         ret, state = self._sanitize_input(result.input.get(force_array=True))
         if ret:
             result.status = state
