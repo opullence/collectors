@@ -1,5 +1,5 @@
-from opulence.facts.person import Person
 from opulence.common.patterns import Composite
+from opulence.facts.person import Person
 
 from ..bases import BaseCollector
 

@@ -1,5 +1,4 @@
 from opulence.facts.file import File
-from opulence.common.patterns import Composite
 
 from ..bases import BaseCollector
 
@@ -20,6 +19,6 @@ class VirusTotal(BaseCollector):
 
     def launch(self, facts):
         return File(
-            filename = "file name from virus total",
-            hash = "fffffffffff"
+            filename="file name from virus total",
+            hash="fffffffffff"
         )
