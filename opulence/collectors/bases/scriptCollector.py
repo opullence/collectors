@@ -33,7 +33,7 @@ class ScriptCollector(BaseCollector):
         return self._script_arguments_
 
     def launch(self, fact):
-        args = self._replace_sigil(fact)
+        args = self._find_and_replace_sigil(fact)
         (return_code, stdout, stderr) = self._exec(self.script_path, *args)
         if return_code:
             raise PluginRuntimeError(stderr)
@@ -54,33 +54,37 @@ class ScriptCollector(BaseCollector):
         stdout, stderr = (x.strip().decode() for x in out.communicate())
         return (out.returncode, stdout, stderr)
 
-    def _replace_sigil(self, facts):
-        args = self.script_arguments
-        if not is_list(args):
-            args = [args]
-
+    @staticmethod
+    def _replace_sigil(arg, facts):
         def find_sigil(arg):
             result = re.search("\\$(.*)\\$", arg)
             if result is not None:
                 return result.group(1)
             return result
 
-        def replace(arg):
-            found = find_sigil(arg)
-            if found is None:
-                return arg
-            value = found
-            try:
-                (class_name, attribute_name) = value.split(".")
-            except ValueError:
-                return arg
-            for fact in facts:
-                if str(type(fact).__name__) == class_name and hasattr(
-                    fact, attribute_name
-                ):
-                    replaced_value = getattr(fact, attribute_name).value
-                    value_to_replace = "${}$".format(value)
-                    return arg.replace(value_to_replace, replaced_value)
+        found = find_sigil(arg)
+        if found is None:
             return arg
+        value = found
+        try:
+            (class_name, attribute_name) = value.split(".")
+        except ValueError:
+            return None
+        for fact in facts:
+            if str(type(fact).__name__) == class_name and hasattr(fact, attribute_name):
+                replaced_value = getattr(fact, attribute_name).value
+                value_to_replace = "${}$".format(value)
+                return arg.replace(value_to_replace, replaced_value)
+        return None
 
-        return [replace(arg) for arg in args]
+    def _find_and_replace_sigil(self, facts):
+        args = self.script_arguments
+        res = []
+
+        if not is_list(args):
+            args = [args]
+        for arg in args:
+            replaced = self._replace_sigil(arg, facts)
+            if replaced is not None:
+                res.append(replaced)
+        return res

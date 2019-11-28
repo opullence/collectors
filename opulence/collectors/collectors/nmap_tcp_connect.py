@@ -8,12 +8,12 @@ from opulence.facts.port import Port
 from ..bases.scriptCollector import ScriptCollector
 
 
-class NmapStealth(ScriptCollector):
+class NmapTCPConnect(ScriptCollector):
     ###############
     # Plugin attributes
     ###############
-    _name_ = "Nmap stealth scan"
-    _description_ = "Performs nmap TCP stealth scan (-sS)"
+    _name_ = "Nmap TCP connect"
+    _description_ = "Performs nmap TCP connect scan (-sT)"
     _author_ = "Louis"
     _version_ = 1
     _dependencies_ = [BinaryDependency("nmap")]
@@ -22,13 +22,13 @@ class NmapStealth(ScriptCollector):
     # Collector attributes
     ###############
     _allowed_input_ = (Domain, IPv4)
-    _active_scanning_ = False
+    _active_scanning_ = True
 
     ###############
     # Script attributes
     ###############
     _script_path_ = "nmap"
-    _script_arguments_ = ["-sS", "-oX", "-", "$Domain.fqdn$", "$IPv4.address$"]
+    _script_arguments_ = ["-sT", "-oX", "-", "$Domain.fqdn$", "$IPv4.address$"]
 
     def parse_result(self, result):
 

@@ -35,9 +35,7 @@ class HackerTarget(ScriptCollector):
 
     def parse_result(self, result):
         results = []
-        found_domains = re.findall(
-            "(.*)\\[host\\] (.*) \\((.*)\\)", result
-        )
+        found_domains = re.findall("(.*)\\[host\\] (.*) \\((.*)\\)", result)
 
         if not found_domains:
             return results
