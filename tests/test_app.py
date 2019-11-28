@@ -33,7 +33,7 @@ class TestApp(unittest.TestCase):
                     "canonical_name": "opulence.collectors.collectors.dummy.Dummy",
                 },
                 "active_scanning": False,
-                "allowed_input": ["Person"],
+                "allowed_input": [Person().get_info()],
             }
             self.assertEqual(dummy_info, should_be)
 
@@ -41,6 +41,6 @@ class TestApp(unittest.TestCase):
         john = Person(firstname="john", lastname="snow")
         res = app.execute_collector_by_name("dummy collector", john)
         output = res.output[0]
-        print("@@@", output)
+
         self.assertEqual(output.firstname.value, "johnDUMMY")
         self.assertEqual(output.lastname.value, "snowDUMMY")

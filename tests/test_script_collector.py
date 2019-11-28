@@ -46,28 +46,28 @@ class TestScriptCollector(unittest.TestCase):
     def test_script_replace(self):
         collector = testCollector()
         a = Person(firstname="fa", lastname="la")
-        sigiled = collector._replace_sigil([a])
+        sigiled = collector._find_and_replace_sigil([a])
         self.assertEqual(sigiled, ["notreplaced", "fa", "notreplaced"])
 
     def test_script_replace_none(self):
         collector = testCollector()
         a = Person(firstname="fa", lastname="la")
-        sigiled = collector._replace_sigil(["nope"])
-        self.assertEqual(sigiled, ["notreplaced", "$Person.firstname$", "notreplaced"])
+        sigiled = collector._find_and_replace_sigil(["nope"])
+        self.assertEqual(sigiled, ["notreplaced", "notreplaced"])
 
     def test_script_script_args_as_array(self):
         collector = testCollector()
         collector._script_arguments_ = "$Person.lastname$"
         a = Person(firstname="fa", lastname="la")
-        sigiled = collector._replace_sigil([a])
+        sigiled = collector._find_and_replace_sigil([a])
         self.assertEqual(sigiled, ["la"])
 
     def test_script_script_args_not_splitable(self):
         collector = testCollector()
         collector._script_arguments_ = "$thereisnodot$"
         a = Person(firstname="fa", lastname="la")
-        sigiled = collector._replace_sigil([a])
-        self.assertEqual(sigiled, ["$thereisnodot$"])
+        sigiled = collector._find_and_replace_sigil([a])
+        self.assertEqual(sigiled, [])
 
 
 if __name__ == "__main__":
