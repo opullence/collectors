@@ -2,7 +2,45 @@ import sys
 
 from dynaconf import settings
 
+import opulence.facts as facts
 from opulence.common.plugins import PluginManager
+
+
+def _random_input(input):
+    random_input = {}
+    for i in input().get_fields():
+        random_input.update({i: "test-{}".format(i)})
+    return input(**random_input)
+
+
+def _gen_input(input_type):
+    if input_type == facts.Domain:
+        return facts.Domain(fqdn="cloudflare.com")
+    elif input_type == facts.IPv4:
+        return facts.IPv4(address="216.58.198.195")
+    elif input_type == facts.Person:
+        return facts.Person(firstname="John", lastname="Snow")
+    else:
+        return _random_input(input_type)
+
+
+def _exec_collector(collector):
+    print_state(collector)
+    allowed_input = collector.get_allowed_input_as_list()
+    test_inputs = []
+    for input in allowed_input:
+        test_inputs.append(_gen_input(input))
+
+    for input in test_inputs:
+        print("\n+ Running collector with input: ", input)
+        print("+\t -> ", input.get_fields())
+        result = collector.run(input)
+        print("@ Got result: ", result.status)
+        if result.output:
+            for i in result.output:
+                print("@-----------------\n@\t->", i)
+                for f in i.get_fields():
+                    print("@\t\t->", f, ":", getattr(i, f).value)
 
 
 def print_state(cls):
@@ -17,26 +55,6 @@ def print_state(cls):
     print("\n* STATUS: {}".format(cls.status), " **")
     print("* INPUT: {}".format(cls.allowed_input), " **")
     print("----------------------------------------------")
-
-
-def _exec_collector(collector):
-    print_state(collector)
-    allowed_input = collector.get_allowed_input_as_list()
-    test_inputs = []
-    for input in allowed_input:
-        test_input = {}
-        for i in input().get_fields():
-            test_input.update({i: "test-{}".format(i)})
-        test_inputs.append(input(**test_input))
-    for input in test_inputs:
-        print("\n+ Running collector with input: ", input)
-        print("+\t -> ", input.get_fields())
-        result = collector.run(input)
-        print("@ Got result: ", result.status)
-        for i in result.output:
-            print("@-----------------\n@\t->", i)
-            for f in i.get_fields():
-                print("@\t\t->", f, ":", getattr(i, f).value)
 
 
 def main():

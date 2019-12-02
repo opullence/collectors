@@ -53,9 +53,8 @@ class BaseCollector(BasePlugin):
 
     def run(self, facts):
         result = Result(
-            input=facts,
-            collector_data=self.get_info(),
-            status=StatusCode.ready)
+            input=facts, collector_data=self.get_info(), status=StatusCode.ready
+        )
         ret, state = self._sanitize_input(result.input.get(force_array=True))
         if ret:
             result.status = state
@@ -63,7 +62,7 @@ class BaseCollector(BasePlugin):
         try:
             result.clock.start()
             result.status = StatusCode.started
-            output = self.launch(result.input.get(force_array=True))
+            output = self.launch(result.input.get())
             result.clock.stop()
             result.output = self._sanitize_output(output)
             result.status = StatusCode.finished

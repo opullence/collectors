@@ -16,8 +16,6 @@ class ScriptCollector(BaseCollector):
     def __init__(self, *args, **kwargs):
         if not self._script_path_:
             raise PluginFormatError("Incorrect script_path")
-        if not self._script_arguments_:
-            raise PluginFormatError("Incorrect script_arguments")
         super().__init__()
 
     @property
@@ -33,10 +31,15 @@ class ScriptCollector(BaseCollector):
         return self._script_arguments_
 
     def launch(self, fact):
+        if not self._script_path_:
+            raise PluginFormatError("Incorrect script_path")
+        if not self._script_arguments_:
+            raise PluginFormatError("Incorrect script_arguments")
+
+        if not is_list(fact):
+            fact = [fact]
         args = self._find_and_replace_sigil(fact)
-        (return_code, stdout, stderr) = self._exec(self.script_path, *args)
-        if return_code:
-            raise PluginRuntimeError(stderr)
+        stdout = self._exec(self.script_path, *args)
         return self.parse_result(stdout)
 
     def parse_result(self, result):
@@ -52,7 +55,9 @@ class ScriptCollector(BaseCollector):
         print("ScriptCollector: launch command {}".format(cmd))
         out = Popen(cmd, stdout=PIPE, stderr=PIPE)
         stdout, stderr = (x.strip().decode() for x in out.communicate())
-        return (out.returncode, stdout, stderr)
+        if out.returncode:
+            raise PluginRuntimeError(stderr)
+        return stdout
 
     @staticmethod
     def _replace_sigil(arg, facts):
