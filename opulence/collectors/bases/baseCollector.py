@@ -8,7 +8,7 @@ from opulence.common.utils import is_iterable, is_list
 
 class BaseCollector(BasePlugin):
     _allowed_input_ = ()
-    _active_scanning_ = False
+    _active_scanning_ = True
 
     def __init__(self, *args, **kwargs):
         if not self._allowed_input_:

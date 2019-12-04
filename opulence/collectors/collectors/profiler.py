@@ -15,17 +15,18 @@ class Profiler(ScriptCollector):
     _description_ = "OSINT HUMINT Profile Collector"
     _author_ = "Louis"
     _version_ = 1
-    _dependencies_ = [BinaryDependency("/srv/recon-ng/recon-cli")]
+    _dependencies_ = [BinaryDependency("recon-ng")]
 
     ###############
     # Collector attributes
     ###############
+    _active_scanning_ = False    
     _allowed_input_ = Username
 
     ###############
     # Script attributes
     ###############
-    _script_path_ = "/srv/recon-ng/recon-cli"
+    _script_path_ = "recon-ng"
     _script_arguments_ = [
         "-m",
         "recon/profiles-profiles/profiler",

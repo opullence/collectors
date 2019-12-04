@@ -1,4 +1,5 @@
 redis
 dynaconf>=2.2.0
-opulence-common @ git+ssh://git@gitlab.com/opulence/common.git@v0.0.6
-opulence-facts @ git+ssh://git@gitlab.com/opulence/facts.git@dev
+celery
+opulence-common@git+ssh://git@gitlab.com/opulence/common.git@master
+opulence-facts@git+ssh://git@gitlab.com/opulence/facts.git@dev
