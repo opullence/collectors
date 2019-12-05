@@ -18,7 +18,4 @@ class VirusTotal(BaseCollector):
     _allowed_input_ = File
 
     def launch(self, facts):
-        return File(
-            filename="file name from virus total",
-            hash="fffffffffff"
-        )
+        return File(filename="file name from virus total", hash="fffffffffff")

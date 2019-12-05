@@ -24,6 +24,6 @@ class Dummy(BaseCollector):
 
     def launch(self, fact):
         return Person(
-            firstname=fact[0].firstname.value + "DUMMY",
-            lastname=fact[0].lastname.value + "DUMMY",
+            firstname=fact.firstname.value + "DUMMY",
+            lastname=fact.lastname.value + "DUMMY",
         )

@@ -14,7 +14,7 @@ class HackerTarget(ScriptCollector):
     _description_ = "Uses the HackerTarget.com API to find host names."
     _author_ = "Louis"
     _version_ = 1
-    _dependencies_ = [BinaryDependency("/srv/recon-ng/recon-cli")]
+    _dependencies_ = [BinaryDependency("recon-ng")]
 
     ###############
     # Collector attributes
@@ -24,7 +24,7 @@ class HackerTarget(ScriptCollector):
     ###############
     # Script attributes
     ###############
-    _script_path_ = "/srv/recon-ng/recon-cli"
+    _script_path_ = "recon-ng"
     _script_arguments_ = [
         "-m",
         "recon/domains-hosts/hackertarget",
