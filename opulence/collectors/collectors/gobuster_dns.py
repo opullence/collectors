@@ -1,6 +1,8 @@
 import re
 
-from opulence.common.plugins.dependencies import BinaryDependency, FileDependency
+from opulence.common.plugins.dependencies import (
+    BinaryDependency, FileDependency
+)
 from opulence.facts.domain import Domain
 
 from ..bases.scriptCollector import ScriptCollector
@@ -16,7 +18,7 @@ class GobusterDNS(ScriptCollector):
     _version_ = 1
     _dependencies_ = [
         BinaryDependency("gobuster"),
-        FileDependency("/srv/wordlists/directories-big.txt")
+        FileDependency("/srv/wordlists/directories-big.txt"),
     ]
 
     ###############
@@ -36,7 +38,7 @@ class GobusterDNS(ScriptCollector):
         "/srv/wordlists/directories-big.txt",
         "--quiet",
         "--noprogress",
-        "--showips"
+        "--showips",
     ]
 
     def parse_result(self, result):

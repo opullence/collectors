@@ -20,7 +20,7 @@ class Profiler(ScriptCollector):
     ###############
     # Collector attributes
     ###############
-    _active_scanning_ = False    
+    _active_scanning_ = False
     _allowed_input_ = Username
 
     ###############

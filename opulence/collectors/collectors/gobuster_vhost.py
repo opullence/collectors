@@ -1,6 +1,8 @@
 import re
 
-from opulence.common.plugins.dependencies import BinaryDependency, FileDependency
+from opulence.common.plugins.dependencies import (
+    BinaryDependency, FileDependency
+)
 from opulence.facts.domain import Domain
 
 from ..bases.scriptCollector import ScriptCollector
@@ -16,7 +18,7 @@ class GobusterVhost(ScriptCollector):
     _version_ = 1
     _dependencies_ = [
         BinaryDependency("gobuster"),
-        FileDependency("/srv/wordlists/subdomains-1000.txt")
+        FileDependency("/srv/wordlists/subdomains-1000.txt"),
     ]
 
     ###############
@@ -36,7 +38,7 @@ class GobusterVhost(ScriptCollector):
         "/srv/wordlists/subdomains-1000.txt",
         "--quiet",
         "--noprogress",
-        "--insecuressl"
+        "--insecuressl",
     ]
 
     def parse_result(self, result):
