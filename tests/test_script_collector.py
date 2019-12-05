@@ -1,7 +1,7 @@
 import unittest
 
 from opulence.collectors.bases import ScriptCollector
-from opulence.common.plugins import PluginStatus, exceptions
+from opulence.common.plugins import exceptions
 from opulence.facts.person import Person
 
 
@@ -27,20 +27,7 @@ class TestScriptCollector(unittest.TestCase):
 
             _script_arguments_ = ["notreplaced", "$Person.firstname$", "notreplaced"]
 
-        with self.assertRaises(exceptions.PluginFormatError) as exc:
-            testCollector()
-
-    def test_script_args_empty(self):
-        class testCollector(ScriptCollector):
-            _name_ = "test"
-            _description_ = "testdesc"
-            _author_ = "test"
-            _version_ = 1
-            _allowed_input_ = Person
-
-            _script_path_ = "test"
-
-        with self.assertRaises(exceptions.PluginFormatError) as exc:
+        with self.assertRaises(exceptions.PluginFormatError):
             testCollector()
 
     def test_script_replace(self):
@@ -51,7 +38,6 @@ class TestScriptCollector(unittest.TestCase):
 
     def test_script_replace_none(self):
         collector = testCollector()
-        a = Person(firstname="fa", lastname="la")
         sigiled = collector._find_and_replace_sigil(["nope"])
         self.assertEqual(sigiled, ["notreplaced", "notreplaced"])
 
