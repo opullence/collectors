@@ -33,7 +33,7 @@ class NmapNSE(ScriptCollector):
         "-sV",
         "-oX",
         "-",
-        "$Domain.fqdn",
+        "$Domain.fqdn$",
         "$IPv4.address$",
     ]
 

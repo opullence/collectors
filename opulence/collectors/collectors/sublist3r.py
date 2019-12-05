@@ -23,7 +23,7 @@ class Sublister(ScriptCollector):
     # Script attributes
     ###############
     _script_path_ = "sublist3r"
-    _script_arguments_ = ["--domain", "argos.sh"]
+    _script_arguments_ = ["--domain", "$Domain.fqdn$"]
 
     def parse_result(self, result):
         res = result.split("Total Unique Subdomains")[1]
