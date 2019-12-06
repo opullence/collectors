@@ -31,8 +31,6 @@ class ScriptCollector(BaseCollector):
         return self._script_arguments_
 
     def launch(self, fact):
-        if not self._script_path_:
-            raise PluginFormatError("Incorrect script_path")
         if not self._script_arguments_:
             raise PluginFormatError("Incorrect script_arguments")
 

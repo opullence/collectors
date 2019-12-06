@@ -5,7 +5,7 @@ from opulence.facts.domain import Domain
 from opulence.facts.ip import IPv4
 from opulence.facts.port import Port
 
-from ..bases.scriptCollector import ScriptCollector
+from opulence.collectors.bases import ScriptCollector
 
 
 class NmapStealth(ScriptCollector):

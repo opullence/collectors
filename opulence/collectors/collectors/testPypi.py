@@ -1,29 +1,35 @@
 from opulence.common.patterns import Composite
 from opulence.facts.person import Person
 
-from ..bases import BaseCollector
+from opulence.common.plugins.dependencies import ModuleDependency
+from opulence.collectors.bases import PypiCollector
 
 
-class Dummy(BaseCollector):
+class TestPypi(PypiCollector):
     ###############
     # Plugin attributes
     ###############
-    _name_ = "dummy collector"
+    _name_ = "TestPypi"
     _description_ = "This is an example collector"
     _author_ = "Louis"
     _version_ = 1
+    _dependencies_ = [ModuleDependency("requests")]
 
     ###############
     # Module attributes
     ###############
-    _allowed_input_ = (Person, Composite(Person, Person))
+    _allowed_input_ = Person
+
+
+    ###############
+    # Pypi attributes
+    ###############
+    _modules_ = {"p": "opulence"}
+
 
     @classmethod
     def verify(cls):
         pass
 
     def launch(self, fact):
-        return Person(
-            firstname=fact.firstname.value + "DUMMY",
-            lastname=fact.lastname.value + "DUMMY",
-        )
+        print(self.modules["p"])

@@ -3,17 +3,17 @@ import re
 from opulence.common.plugins.dependencies import (
     BinaryDependency, FileDependency
 )
-from opulence.facts import URI, Domain
+from opulence.facts.domain import Domain
 
-from ..bases.scriptCollector import ScriptCollector
+from opulence.collectors.bases import ScriptCollector
 
 
-class GobusterDir(ScriptCollector):
+class GobusterVhost(ScriptCollector):
     ###############
     # Plugin attributes
     ###############
-    _name_ = "GoBuster dir"
-    _description_ = "Directory brute force using gobuster."
+    _name_ = "GoBuster Vhost"
+    _description_ = "Virtual host brute force using gobuster."
     _author_ = "Louis"
     _version_ = 1
     _dependencies_ = [
@@ -31,20 +31,18 @@ class GobusterDir(ScriptCollector):
     ###############
     _script_path_ = "gobuster"
     _script_arguments_ = [
-        "dir",
+        "vhost",
         "--url",
         "$Domain.fqdn$",
         "--wordlist",
         "/srv/wordlists/subdomains-1000.txt",
-        "--insecuressl",
-        "--expanded",
         "--quiet",
         "--noprogress",
-        "--followredirect",
+        "--insecuressl",
     ]
 
     def parse_result(self, result):
-        found_domains = re.findall("(.*) \\(Status:", result)
+        found_domains = re.findall("Found: (.*) \\(Status:", result)
         if found_domains:
             for f in found_domains:
-                yield URI(full_uri=f)
+                yield Domain(fqdn=f)

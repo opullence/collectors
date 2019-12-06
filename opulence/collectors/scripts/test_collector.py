@@ -15,7 +15,7 @@ def _random_input(input):
 
 def _gen_input(input_type):
     if input_type == facts.Domain:
-        return facts.Domain(fqdn="google.fr")
+        return facts.Domain(fqdn="wavely.fr")
     elif input_type == facts.IPv4:
         return facts.IPv4(address="216.58.198.195")
     elif input_type == facts.Person:
