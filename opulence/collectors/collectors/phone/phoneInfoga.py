@@ -50,7 +50,7 @@ class PhoneInfoga(ScriptCollector):
         if res:
             for info in res:
                 country_code, local_number, country, country_short, location, carrier, line_type = info
-                yield Country(name=country, short_name=country_short)
+                yield Country(name=country, code=country_short)
                 yield Phone(number=number, localformat=local_number, carrier=carrier, country_code=country_code, line_type=line_type)
 
     def parse_ovh_result(self, result, number):

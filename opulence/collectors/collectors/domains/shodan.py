@@ -40,7 +40,7 @@ class Shodan(PypiCollector):
         country = host.get('country_name', None)
         if country is not None:
             country_code = host.get('country_code', None) or host.get('country_code3', None)
-            yield facts.Country(name=country, short_name=country_code)
+            yield facts.Country(name=country, code=country_code)
 
         org = host.get('org', None)
         if org is not None:
@@ -54,7 +54,7 @@ class Shodan(PypiCollector):
             if item["os"]:
                 yield facts.OperatingSystem(family=item["os"])
             if item["location"] and item["location"]["country_name"]:
-                yield facts.Country(name=item["location"]["country_name"], short_name=item["location"]["country_code"])
+                yield facts.Country(name=item["location"]["country_name"], code=item["location"]["country_code"])
             if item["location"] and item["location"]["longitude"] and item["location"]["latitude"]:
                 yield facts.GeoCoordinates(longitude=item["location"]["longitude"], latitude=item["location"]["latitude"])
             if item["asn"]:
