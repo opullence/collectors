@@ -1,5 +1,6 @@
 redis
 dynaconf>=2.2.0
 celery
+shodan>=1.20.0 
 opulence-common @ git+https://gitlab.com/opulence/common.git@jurelou/v0.0.8
 opulence-facts @ git+https://gitlab.com/opulence/facts.git@jurelou/v0.0.8

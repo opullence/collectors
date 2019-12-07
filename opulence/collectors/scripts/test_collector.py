@@ -17,7 +17,7 @@ def _gen_input(input_type):
     if input_type == facts.Domain:
         return facts.Domain(fqdn="wavely.fr")
     elif input_type == facts.IPv4:
-        return facts.IPv4(address="216.58.198.195")
+        return facts.IPv4(address="31.3.142.135")
     elif input_type == facts.Person:
         return facts.Person(firstname="John", lastname="Snow")
     elif input_type == facts.Phone:
@@ -26,7 +26,6 @@ def _gen_input(input_type):
         return facts.Username(name="jurelou")
     else:
         return _random_input(input_type)
-
 
 def _exec_collector(collector):
     print_state(collector)

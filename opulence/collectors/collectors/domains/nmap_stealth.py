@@ -40,5 +40,5 @@ class NmapStealth(ScriptCollector):
         res = []
         for port in found_ports:
             proto, port_number, state = port
-            res.append(Port(number=port_number, state=state, proto=proto))
+            res.append(Port(number=port_number, state=state, transport=proto))
         return res
