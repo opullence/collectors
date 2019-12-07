@@ -1,9 +1,8 @@
 import re
 
+from opulence.collectors.bases import ScriptCollector
 from opulence.common.plugins.dependencies import BinaryDependency
 from opulence.facts.domain import Domain
-
-from opulence.collectors.bases import ScriptCollector
 
 
 class HackerTarget(ScriptCollector):

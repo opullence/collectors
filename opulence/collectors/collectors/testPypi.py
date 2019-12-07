@@ -1,8 +1,7 @@
-from opulence.common.patterns import Composite
-from opulence.facts.person import Person
-
-from opulence.common.plugins.dependencies import ModuleDependency
 from opulence.collectors.bases import PypiCollector
+from opulence.common.patterns import Composite
+from opulence.common.plugins.dependencies import ModuleDependency
+from opulence.facts.person import Person
 
 
 class TestPypi(PypiCollector):
@@ -20,12 +19,10 @@ class TestPypi(PypiCollector):
     ###############
     _allowed_input_ = Person
 
-
     ###############
     # Pypi attributes
     ###############
     _modules_ = {"p": "opulence"}
-
 
     @classmethod
     def verify(cls):

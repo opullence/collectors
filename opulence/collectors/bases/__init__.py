@@ -1,9 +1,5 @@
 from .baseCollector import BaseCollector
-from .scriptCollector import ScriptCollector
 from .pypiCollector import PypiCollector
+from .scriptCollector import ScriptCollector
 
-__all__ = [
-    BaseCollector,
-    ScriptCollector,
-    PypiCollector
-]
+__all__ = [BaseCollector, ScriptCollector, PypiCollector]

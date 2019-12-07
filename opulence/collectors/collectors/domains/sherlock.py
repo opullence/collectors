@@ -1,10 +1,9 @@
 import re
 
+from opulence.collectors.bases import ScriptCollector
 from opulence.common.plugins.dependencies import BinaryDependency
 from opulence.facts.socialProfile import SocialProfile
 from opulence.facts.username import Username
-
-from opulence.collectors.bases import ScriptCollector
 
 
 class Sherlock(ScriptCollector):
@@ -28,11 +27,15 @@ class Sherlock(ScriptCollector):
     ###############
     _script_path_ = "sherlock"
 
-
     def launch(self, fact):
-        cmd = [self._script_path_, fact.name.value, "--print-found", "--folderoutput", "/tmp"]
+        cmd = [
+            self._script_path_,
+            fact.name.value,
+            "--print-found",
+            "--folderoutput",
+            "/tmp",
+        ]
         yield from self.parse_result(self._exec(*cmd), fact.name.value)
-
 
     def parse_result(self, result, username):
         found_social_profiles = re.findall("\\[\\+\\] (.*): (.*)", result)

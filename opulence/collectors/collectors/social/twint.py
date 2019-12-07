@@ -1,9 +1,8 @@
 import re
 
-from opulence.common.plugins.dependencies import BinaryDependency
-from opulence.facts import Username, Tweet
-
 from opulence.collectors.bases import ScriptCollector
+from opulence.common.plugins.dependencies import BinaryDependency
+from opulence.facts import Tweet, Username
 
 
 class Twint(ScriptCollector):
@@ -14,9 +13,7 @@ class Twint(ScriptCollector):
     _description_ = "Gather information from a user's twitter profile."
     _author_ = "Louis"
     _version_ = 1
-    _dependencies_ = [
-        BinaryDependency("twint"),
-    ]
+    _dependencies_ = [BinaryDependency("twint")]
 
     ###############
     # Collector attributes
@@ -42,16 +39,14 @@ class Twint(ScriptCollector):
 
     @staticmethod
     def parse_tweets(stdout):
-        found_tweets = re.findall("(\\d{15,21}) ([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01]) (?:(?:[01]?\\d|2[0-3]:)?[0-5]?\\d:)?[0-5]?\\d) (.*) <(.*)> (.*)", stdout)
+        found_tweets = re.findall(
+            "(\\d{15,21}) ([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01]) (?:(?:[01]?\\d|2[0-3]:)?[0-5]?\\d:)?[0-5]?\\d) (.*) <(.*)> (.*)",
+            stdout,
+        )
         if found_tweets:
             for f in found_tweets:
                 t_id, date, _, _, tz, username, message = f
-                yield Tweet(
-                    id= t_id,
-                    message=message,
-                    author=username,
-                    date=date
-                    )
+                yield Tweet(id=t_id, message=message, author=username, date=date)
 
     @staticmethod
     def parse_usernames(stdout):

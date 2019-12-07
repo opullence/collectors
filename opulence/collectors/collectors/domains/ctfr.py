@@ -1,9 +1,8 @@
 import re
 
+from opulence.collectors.bases import ScriptCollector
 from opulence.common.plugins.dependencies import BinaryDependency
 from opulence.facts import Domain
-
-from opulence.collectors.bases import ScriptCollector
 
 
 class Ctfr(ScriptCollector):
@@ -14,9 +13,7 @@ class Ctfr(ScriptCollector):
     _description_ = "Subdomains enumaration using certificate transparency."
     _author_ = "Louis"
     _version_ = 1
-    _dependencies_ = [
-        BinaryDependency("ctfr"),
-    ]
+    _dependencies_ = [BinaryDependency("ctfr")]
 
     ###############
     # Collector attributes
@@ -27,10 +24,7 @@ class Ctfr(ScriptCollector):
     # Script attributes
     ###############
     _script_path_ = "ctfr"
-    _script_arguments_ = [
-        "--domain",
-        "$Domain.fqdn$",
-    ]
+    _script_arguments_ = ["--domain", "$Domain.fqdn$"]
 
     def parse_result(self, result):
         found_domains = re.findall("\\[-\\] *(.*)", result)

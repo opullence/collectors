@@ -1,10 +1,10 @@
 import re
 
-from opulence.common.plugins.dependencies import BinaryDependency
-from opulence.facts import Username, File, Email
-
 from opulence.collectors.bases import ScriptCollector
 from opulence.common.passwordstore import Store
+from opulence.common.plugins.dependencies import BinaryDependency
+from opulence.facts import Email, File, Username
+
 
 class Gitrob(ScriptCollector):
     ###############
@@ -37,22 +37,27 @@ class Gitrob(ScriptCollector):
     ]
 
     def parse_result(self, result):
-        repos =  re.findall("Path\\.*: (.*)\\r\\n  Repo\\.*: (.*)\\r\\n  Message\\.*: (.*)\\r\\n  Author\\.*: (.*) \\<(.*)\\>\\r\\n( *Comment\\.*: .*\\r\\n)?  File URL\\.*: (.*)\\r\\n  Commit URL.*: (.*)\\r\\n -*", result)
+        repos = re.findall(
+            "Path\\.*: (.*)\\r\\n  Repo\\.*: (.*)\\r\\n  Message\\.*: (.*)\\r\\n  Author\\.*: (.*) \\<(.*)\\>\\r\\n( *Comment\\.*: .*\\r\\n)?  File URL\\.*: (.*)\\r\\n  Commit URL.*: (.*)\\r\\n -*",
+            result,
+        )
         if repos:
             for r in repos:
-                path, repository, message, author_name, author_email, comment, file_url, commit_url = r
-                raw_file_url = file_url.replace("/github.com/", "/raw.githubusercontent.com/")
+                path, repository, message, author_name, author_email, comment, file_url, commit_url = (
+                    r
+                )
+                raw_file_url = file_url.replace(
+                    "/github.com/", "/raw.githubusercontent.com/"
+                )
                 raw_file_url = raw_file_url.replace("/blob/", "/")
                 raw_file_name = raw_file_url.split("/")[-1]
                 try:
                     raw_file_ext = raw_file_name.split(".")[-1]
-                except:
+                except Exception:
                     raw_file_ext = None
 
                 yield Email(address=author_email)
                 yield Username(address=author_name)
                 yield File(
-                    filename=raw_file_name,
-                    url=raw_file_url,
-                    extension=raw_file_ext
+                    filename=raw_file_name, url=raw_file_url, extension=raw_file_ext
                 )

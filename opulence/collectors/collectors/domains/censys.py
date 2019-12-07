@@ -1,10 +1,8 @@
-import re
-
-from opulence.common.plugins.dependencies import ModuleDependency
 import opulence.facts as facts
-
 from opulence.collectors.bases import PypiCollector
 from opulence.common.passwordstore import Store
+from opulence.common.plugins.dependencies import ModuleDependency
+
 
 class Censys(PypiCollector):
     ###############
@@ -30,12 +28,13 @@ class Censys(PypiCollector):
     ###############
     _modules_ = {"censys": "censys.ipv4"}
 
-
     _api_id_ = Store().get_decrypted_password("opulence/censys_api_id")
     _api_key_ = Store().get_decrypted_password("opulence/censys_secret")
 
     def launch(self, fact):
-        api = self.modules["censys"].CensysIPv4(api_id=self._api_id_, api_secret=self._api_key_)
+        api = self.modules["censys"].CensysIPv4(
+            api_id=self._api_id_, api_secret=self._api_key_
+        )
 
         result = api.view(fact.address.value)
 
@@ -43,18 +42,20 @@ class Censys(PypiCollector):
             id=result["autonomous_system"]["asn"],
             prefix=result["autonomous_system"]["routed_prefix"],
             organization=result["autonomous_system"]["name"],
-            rir=result["autonomous_system"]["rir"])
+            rir=result["autonomous_system"]["rir"],
+        )
 
         yield facts.Country(
             name=result["location"]["country"],
             code=result["location"]["country_code"],
             timezone=result["location"]["timezone"],
-            continent=result["location"]["continent"]
-            )
+            continent=result["location"]["continent"],
+        )
 
         yield facts.GeoCoordinates(
             longitude=result["location"]["longitude"],
-            latitude=result["location"]["latitude"])
+            latitude=result["location"]["latitude"],
+        )
 
-        ports = result["ports"]
+        # ports = result["ports"]
         # TODO: do something with this

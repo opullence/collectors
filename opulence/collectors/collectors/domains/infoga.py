@@ -1,9 +1,8 @@
 import re
 
-from opulence.common.plugins.dependencies import BinaryDependency
-from opulence.facts import Email, Domain
-
 from opulence.collectors.bases import ScriptCollector
+from opulence.common.plugins.dependencies import BinaryDependency
+from opulence.facts import Domain, Email
 
 
 class Infoga(ScriptCollector):
@@ -19,21 +18,17 @@ class Infoga(ScriptCollector):
     ###############
     # Collector attributes
     ###############
-    _allowed_input_ = (Domain)
+    _allowed_input_ = Domain
     _active_scanning_ = False
 
     ###############
     # Script attributes
     ###############
     _script_path_ = "infoga"
-    _script_arguments_ = [
-        "--domain",
-        "$Domain.fqdn$",
-        "--breach"
-    ]
+    _script_arguments_ = ["--domain", "$Domain.fqdn$", "--breach"]
 
     def parse_result(self, result):
-        emails = re.findall(' Email: *(.*?) *\\(*?\\)', result)
+        emails = re.findall(" Email: *(.*?) *\\(*?\\)", result)
         if emails:
             for email in emails:
                 yield Email(address=email)

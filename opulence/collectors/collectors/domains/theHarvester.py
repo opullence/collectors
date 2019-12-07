@@ -1,8 +1,8 @@
 import re
-from opulence.common.plugins.dependencies import BinaryDependency
-from opulence.facts import Domain, IPv4
 
 from opulence.collectors.bases import ScriptCollector
+from opulence.common.plugins.dependencies import BinaryDependency
+from opulence.facts import Domain, IPv4
 
 
 class TheHarvester(ScriptCollector):
@@ -29,22 +29,33 @@ class TheHarvester(ScriptCollector):
         "--domain",
         "$Domain.fqdn$",
         "-b",
-        "baidu,bing,certspotter,crtsh,dnsdumpster,dogpile,duckduckgo,google,intelx,linkedin,linkedin_links,netcraft,otx,threatcrowd,trello,twitter,vhost,virustotal,yahoo"
+        "baidu,bing,certspotter,crtsh,dnsdumpster,dogpile,duckduckgo,google,intelx,linkedin,linkedin_links,netcraft,otx,threatcrowd,trello,twitter,vhost,virustotal,yahoo",
     ]
 
     def parse_result(self, result):
-        found_ips = re.search('\\[\\*\\] IPs found: \\d*\\n-------------------\\n((.|\\n)*?)\\[\\*\\]', result)
-        found_domains = re.search('\\[\\*\\] Hosts found: \\d*\\n---------------------\\n((.|\\n)*)\\n\\[\\*\\]', result)
-       
+        found_ips = re.search(
+            "\\[\\*\\] IPs found: \\d*\\n-------------------\\n((.|\\n)*?)\\[\\*\\]",
+            result,
+        )
+        found_domains = re.search(
+            "\\[\\*\\] Hosts found: \\d*\\n---------------------\\n((.|\\n)*)\\n\\[\\*\\]",
+            result,
+        )
+
         if found_domains and found_domains.group(1):
-            domains_ip = re.findall('(.*):(\\b\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\b)?', found_domains.group(1)) 
+            domains_ip = re.findall(
+                "(.*):(\\b\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\b)?",
+                found_domains.group(1),
+            )
             if domains_ip:
                 for d in domains_ip:
                     domain, ip = d
                     yield Domain(fqdn=domain, ip=ip)
 
         if found_ips and found_ips.group(1):
-            ips = re.findall('(\\b\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\b)',found_ips.group(1))
+            ips = re.findall(
+                "(\\b\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\b)", found_ips.group(1)
+            )
             if ips:
                 for i in ips:
                     yield IPv4(address=i)

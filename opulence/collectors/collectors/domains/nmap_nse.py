@@ -1,9 +1,8 @@
 import re
 
+from opulence.collectors.bases import ScriptCollector
 from opulence.common.plugins.dependencies import BinaryDependency
 from opulence.facts import CVE, Domain, IPv4, VulDB
-
-from opulence.collectors.bases import ScriptCollector
 
 
 class NmapNSE(ScriptCollector):

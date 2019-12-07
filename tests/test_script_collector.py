@@ -2,7 +2,7 @@ import unittest
 
 from opulence.collectors.bases import ScriptCollector
 from opulence.common.plugins import exceptions
-from opulence.facts.person import Person
+from opulence.facts import Person
 
 
 class testCollector(ScriptCollector):

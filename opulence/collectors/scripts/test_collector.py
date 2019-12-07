@@ -27,6 +27,7 @@ def _gen_input(input_type):
     else:
         return _random_input(input_type)
 
+
 def _exec_collector(collector):
     print_state(collector)
     allowed_input = collector.get_allowed_input_as_list()
