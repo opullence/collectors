@@ -18,7 +18,7 @@ class Waybackurls(ScriptCollector):
     # Collector attributes
     ###############
     _allowed_input_ = Domain
-
+    _active_scanning_ = False
     ###############
     # Script attributes
     ###############
