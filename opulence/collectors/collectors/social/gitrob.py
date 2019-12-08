@@ -3,7 +3,7 @@ import re
 from opulence.collectors.bases import ScriptCollector
 from opulence.common.passwordstore import Store
 from opulence.common.plugins.dependencies import BinaryDependency
-from opulence.facts import Email, File, Username
+from opulence.facts import Email, File, Username, GitRepository
 
 
 class Gitrob(ScriptCollector):
@@ -30,7 +30,7 @@ class Gitrob(ScriptCollector):
     _script_path_ = "gitrob"
     _script_arguments_ = [
         "-commit-depth",
-        "500",
+        "50",
         "-github-access-token",
         Store().get_decrypted_password("opulence/github_token"),
         "$Username.name$",
@@ -43,7 +43,8 @@ class Gitrob(ScriptCollector):
         )
         if repos:
             for r in repos:
-                path, repository, message, author_name, author_email, comment, file_url, commit_url = (
+
+                path, repository, _, author_name, author_email, comment, file_url, commit_url = (
                     r
                 )
                 raw_file_url = file_url.replace(
@@ -51,6 +52,12 @@ class Gitrob(ScriptCollector):
                 )
                 raw_file_url = raw_file_url.replace("/blob/", "/")
                 raw_file_name = raw_file_url.split("/")[-1]
+
+                yield GitRepository(
+                    url="https://github.com/{}.git".format(repository),
+                    host="github.com",
+                    username=repository.split("/")[0],
+                    project=repository.split("/")[1])
                 try:
                     raw_file_ext = raw_file_name.split(".")[-1]
                 except Exception:

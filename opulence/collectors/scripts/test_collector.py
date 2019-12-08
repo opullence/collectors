@@ -24,6 +24,9 @@ def _gen_input(input_type):
         return facts.Phone(number="1-855-684-5463")
     elif input_type == facts.Username:
         return facts.Username(name="jurelou")
+    elif input_type == facts.Email:
+        return facts.Email(address="test@gmail.com")
+
     else:
         return _random_input(input_type)
 
