@@ -5,6 +5,9 @@ from dynaconf import settings
 
 from opulence.common.configuration import configure_celery
 from opulence.common.plugins import PluginManager
+from opulence.common.job import StatusCode
+
+from opulence.collectors import services
 
 logger = get_task_logger(__name__)
 
@@ -14,7 +17,7 @@ manager = multiprocessing.Manager()
 available_collectors = manager.dict()
 
 
-@app.task(name="collectors:reload_collectors")
+@app.task(name="collectors:reload_collectors", ignore_result=True)
 def reload_collectors(flush=False):
     global available_collectors
     logger.info("Reload collectors")
@@ -27,35 +30,26 @@ def reload_collectors(flush=False):
                 available_collectors[plugin.plugin_name] = plugin
 
 
-@app.task(name="collectors:collector_info")
-def collector_info(collector_name):
-    logger.info("Collector info for {}".format(collector_name))
-
-    if collector_name in available_collectors:
-        return available_collectors[collector_name].get_info()
-    return None
-
-
 @app.task(name="collectors:list_collectors")
 def list_collectors():
     global available_collectors
     logger.info("List collectors")
-    return [name for name, _ in available_collectors.items()]
+    return [ c.get_info() for _, c in available_collectors.items() ]
 
 
 @app.task(name="collectors:execute_collector_by_name")
 def execute_collector_by_name(collector_name, fact_or_composite):
     global available_collectors
     logger.info(
-        "Execute collector {} with \
-        {}".format(
+        "Execute collector {} with {}".format(
             collector_name, type(fact_or_composite)
         )
     )
+    result = services.create_result(input=fact_or_composite)
     if collector_name in available_collectors:
-        return available_collectors[collector_name].run(fact_or_composite)
-    return "Collector not found"
-
+        return available_collectors[collector_name].run(result)
+    result.status = StatusCode.error, "Could not find collector {}".format(collector_name)
+    return result
 
 # Reload collectors at startup
 reload_collectors(flush=True)

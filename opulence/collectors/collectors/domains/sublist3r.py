@@ -1,6 +1,6 @@
 from opulence.collectors.bases import ScriptCollector
 from opulence.common.plugins.dependencies import BinaryDependency
-from opulence.facts.domain import Domain
+from opulence.facts import Domain
 
 
 class Sublister(ScriptCollector):

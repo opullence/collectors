@@ -26,7 +26,10 @@ def _gen_input(input_type):
         return facts.Username(name="jurelou")
     elif input_type == facts.Email:
         return facts.Email(address="test@gmail.com")
-
+    elif input_type == facts.GitRepository:
+        return facts.GitRepository(url="https://github.com/redcanaryco/atomic-red-team")
+    elif input_type == facts.Organization:
+        return facts.Organization(name="wavely")
     else:
         return _random_input(input_type)
 

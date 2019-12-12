@@ -19,7 +19,7 @@ class LittleBrother(ScriptCollector):
     # Collector attributes
     ###############
     _active_scanning_ = False
-    _allowed_input_ = Email
+    _allowed_input_ = (Email, Username)
 
     ###############
     # Script attributes

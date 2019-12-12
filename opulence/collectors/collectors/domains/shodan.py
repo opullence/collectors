@@ -39,29 +39,30 @@ class Shodan(PypiCollector):
         yield facts.OperatingSystem(family=host.get("os", None))
 
         for item in host["data"]:
-            for cpe in item["cpe"]:
-                yield facts.CPE(id=cpe)
-            if item["os"]:
+            if "cpe" in item:
+                for cpe in item["cpe"]:
+                    yield facts.CPE(id=cpe)
+            if "os" in item:
                 yield facts.OperatingSystem(family=item["os"])
-            if item["location"] and item["location"]["country_name"]:
+            if "location" in item and "country_name" in item["location"]:
                 yield facts.Country(
                     name=item["location"]["country_name"],
                     code=item["location"]["country_code"],
                 )
             if (
-                item["location"]
-                and item["location"]["longitude"]
-                and item["location"]["latitude"]
+                "location" in item
+                and "longitude" in item["location"]
+                and "latitude" in item["location"]
             ):
                 yield facts.GeoCoordinates(
                     longitude=item["location"]["longitude"],
                     latitude=item["location"]["latitude"],
                 )
-            if item["asn"]:
-                yield facts.ASN(id=item["asn"], organization=item["org"])
-            if item["data"]:
+            if "asn" in item:
+                yield facts.ASN(id=item["asn"], organization=host.get("org", None))
+            if "data" in item:
                 yield facts.Banner(
-                    message=item["data"], port=item["port"], product=item["product"]
+                    message=item["data"], port=host.get("port", None), product=host.get("product", None)
                 )
-            if item["port"]:
-                yield facts.Port(number=item["port"], transport=item["transport"])
+            if "port" in item:
+                yield facts.Port(number=item["port"], transport=host.get("transport", None))

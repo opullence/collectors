@@ -30,4 +30,4 @@ class Ctfr(ScriptCollector):
         found_domains = re.findall("\\[-\\] *(.*)", result)
         if found_domains:
             for f in found_domains:
-                yield Domain(address=f)
+                yield Domain(fqdn=f)
