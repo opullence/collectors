@@ -1,19 +1,16 @@
 import re
 
+from opulence.collectors.bases import ScriptCollector
 from opulence.common.plugins.dependencies import BinaryDependency
-from opulence.facts.domain import Domain
-from opulence.facts.ip import IPv4
-from opulence.facts.port import Port
-
-from ..bases.scriptCollector import ScriptCollector
+from opulence.facts import Domain, IPv4, Port
 
 
-class NmapTCPConnect(ScriptCollector):
+class NmapStealth(ScriptCollector):
     ###############
     # Plugin attributes
     ###############
-    _name_ = "Nmap TCP connect"
-    _description_ = "Performs nmap TCP connect scan (-sT)"
+    _name_ = "Nmap stealth scan"
+    _description_ = "Performs nmap TCP stealth scan (-sS)"
     _author_ = "Louis"
     _version_ = 1
     _dependencies_ = [BinaryDependency("nmap")]
@@ -21,14 +18,14 @@ class NmapTCPConnect(ScriptCollector):
     ###############
     # Collector attributes
     ###############
+    _active_scanning_ = False
     _allowed_input_ = (Domain, IPv4)
-    _active_scanning_ = True
 
     ###############
     # Script attributes
     ###############
     _script_path_ = "nmap"
-    _script_arguments_ = ["-sT", "-oX", "-", "$Domain.fqdn$", "$IPv4.address$"]
+    _script_arguments_ = ["-sS", "-oX", "-", "$Domain.fqdn$", "$IPv4.address$"]
 
     def parse_result(self, result):
 
@@ -40,5 +37,5 @@ class NmapTCPConnect(ScriptCollector):
         res = []
         for port in found_ports:
             proto, port_number, state = port
-            res.append(Port(number=port_number, state=state, proto=proto))
+            res.append(Port(number=port_number, state=state, transport=proto))
         return res

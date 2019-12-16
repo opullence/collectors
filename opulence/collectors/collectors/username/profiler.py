@@ -1,10 +1,8 @@
 import re
 
+from opulence.collectors.bases import ScriptCollector
 from opulence.common.plugins.dependencies import BinaryDependency
-from opulence.facts.socialProfile import SocialProfile
-from opulence.facts.username import Username
-
-from ..bases.scriptCollector import ScriptCollector
+from opulence.facts import SocialProfile, Username
 
 
 class Profiler(ScriptCollector):

@@ -1,4 +1,5 @@
 import re
+import time
 from subprocess import PIPE, Popen
 
 from opulence.common.plugins.exceptions import (
@@ -31,8 +32,6 @@ class ScriptCollector(BaseCollector):
         return self._script_arguments_
 
     def launch(self, fact):
-        if not self._script_path_:
-            raise PluginFormatError("Incorrect script_path")
         if not self._script_arguments_:
             raise PluginFormatError("Incorrect script_arguments")
 
@@ -51,13 +50,20 @@ class ScriptCollector(BaseCollector):
         )
 
     @staticmethod
-    def _exec(*cmd):
+    def _exec(*cmd, stdin=None, ignore_error=False):
+        def return_stdout(process_pipe):
+            stdout, stderr = (x.strip().decode() for x in process_pipe.communicate())
+            if not ignore_error and process_pipe.returncode:
+                raise PluginRuntimeError(stderr)
+            return stdout
+
         print("ScriptCollector: launch command {}".format(cmd))
-        out = Popen(cmd, stdout=PIPE, stderr=PIPE)
-        stdout, stderr = (x.strip().decode() for x in out.communicate())
-        if out.returncode:
-            raise PluginRuntimeError(stderr)
-        return stdout
+        if stdin is not None:
+            out = Popen(cmd, stdin=PIPE, stdout=PIPE, stderr=PIPE)
+            out.stdin.write(str.encode(stdin))
+        else:
+            out = Popen(cmd, stdout=PIPE, stderr=PIPE)
+        return return_stdout(out)
 
     @staticmethod
     def _replace_sigil(arg, facts):
