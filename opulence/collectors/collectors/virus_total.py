@@ -1,5 +1,5 @@
 from opulence.collectors.bases import BaseCollector
-from opulence.facts.file import File
+from opulence.facts import File
 
 
 class VirusTotal(BaseCollector):

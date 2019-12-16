@@ -34,7 +34,9 @@ class Shodan(PypiCollector):
         api = self.modules["s"].Shodan(self._apikey_)
         host = api.host(fact.address.value)
 
-        yield facts.Country(name=host.get("country_name", None), code=host.get("country_code", None))
+        yield facts.Country(
+            name=host.get("country_name", None), code=host.get("country_code", None)
+        )
         yield facts.Organization(name=host.get("org", None))
         yield facts.OperatingSystem(family=host.get("os", None))
 
@@ -62,7 +64,11 @@ class Shodan(PypiCollector):
                 yield facts.ASN(id=item["asn"], organization=host.get("org", None))
             if "data" in item:
                 yield facts.Banner(
-                    message=item["data"], port=host.get("port", None), product=host.get("product", None)
+                    message=item["data"],
+                    port=host.get("port", None),
+                    product=host.get("product", None),
                 )
             if "port" in item:
-                yield facts.Port(number=item["port"], transport=host.get("transport", None))
+                yield facts.Port(
+                    number=item["port"], transport=host.get("transport", None)
+                )

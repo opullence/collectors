@@ -2,7 +2,7 @@ import re
 
 from opulence.collectors.bases import ScriptCollector
 from opulence.common.plugins.dependencies import BinaryDependency
-from opulence.facts import Username, Email, SocialProfile
+from opulence.facts import Email, SocialProfile, Username
 
 
 class Socialscan(ScriptCollector):
@@ -40,7 +40,7 @@ class Socialscan(ScriptCollector):
                 "snapchat",
                 "gitlab",
                 "reddit",
-                "yahoo"
+                "yahoo",
             ]
         elif isinstance(fact, Email):
             command = [
@@ -53,10 +53,9 @@ class Socialscan(ScriptCollector):
                 "tumblr",
                 "lastfm",
                 "pinterest",
-                "spotify"
+                "spotify",
             ]
         yield from self.parse_result(self._exec(*command))
-
 
     def parse_result(self, result):
         profiles = re.findall("Checked *(.*?) *on *(.*?) *: (?!Available)", result)
@@ -64,4 +63,3 @@ class Socialscan(ScriptCollector):
             for profile in profiles:
                 username, website = profile
                 yield SocialProfile(username=username, site=website)
-        

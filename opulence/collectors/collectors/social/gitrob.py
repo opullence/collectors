@@ -3,7 +3,7 @@ import re
 from opulence.collectors.bases import ScriptCollector
 from opulence.common.passwordstore import Store
 from opulence.common.plugins.dependencies import BinaryDependency
-from opulence.facts import Email, File, Username, GitRepository
+from opulence.facts import Email, File, GitRepository, Username
 
 
 class Gitrob(ScriptCollector):
@@ -57,7 +57,8 @@ class Gitrob(ScriptCollector):
                     url="https://github.com/{}.git".format(repository),
                     host="github.com",
                     username=repository.split("/")[0],
-                    project=repository.split("/")[1])
+                    project=repository.split("/")[1],
+                )
                 try:
                     raw_file_ext = raw_file_name.split(".")[-1]
                 except Exception:

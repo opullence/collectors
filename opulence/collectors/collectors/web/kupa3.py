@@ -10,9 +10,7 @@ class Kupa3(ScriptCollector):
     # Plugin attributes
     ###############
     _name_ = "Kupa3"
-    _description_ = (
-        "Extract javascript files and trackers."
-    )
+    _description_ = "Extract javascript files and trackers."
     _author_ = "Louis"
     _version_ = 1
     _dependencies_ = [BinaryDependency("kupa3")]
@@ -36,7 +34,6 @@ class Kupa3(ScriptCollector):
         for command in commands:
             yield from self.parse_result(self._exec(*command))
 
-
     def parse_result(self, result):
         links = re.findall("LINK->(.*)\\n", result)
         scripts = re.findall("SCRIPT-> (.*)\\n", result)
@@ -46,7 +43,4 @@ class Kupa3(ScriptCollector):
                 yield Domain(fqdn=link)
         if scripts:
             for script in scripts:
-                yield File(
-                    filename=script.split("/")[-1],
-                    url=script,
-                    extension="js")
+                yield File(filename=script.split("/")[-1], url=script, extension="js")

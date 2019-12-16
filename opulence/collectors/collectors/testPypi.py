@@ -1,7 +1,7 @@
 from opulence.collectors.bases import PypiCollector
 from opulence.common.patterns import Composite
 from opulence.common.plugins.dependencies import ModuleDependency
-from opulence.facts.person import Person
+from opulence.facts import Person
 
 
 class TestPypi(PypiCollector):

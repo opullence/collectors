@@ -38,9 +38,7 @@ class BlackWidow(ScriptCollector):
 
     def return_uri(self, filepath):
         if filepath and filepath.group(1):
-            for line in self.read_file_line_by_line(
-                "{}.txt".format(filepath.group(1))
-            ):
+            for line in self.read_file_line_by_line("{}.txt".format(filepath.group(1))):
                 yield URI(full_uri=line)
 
     def parse_result(self, result):
@@ -59,12 +57,7 @@ class BlackWidow(ScriptCollector):
         )
         emails_file = re.search("\\[\\+\\] Emails Discovered:.*\\n(.*).txt", result)
         phones_file = re.search("\\[\\+\\] Phones Discovered:.*\\n(.*).txt", result)
-        uris = [
-            urls_file,
-            dynamic_urls_file,
-            form_urls_file,
-            dynamic_parameters_file
-        ]
+        uris = [urls_file, dynamic_urls_file, form_urls_file, dynamic_parameters_file]
         for uri_path in uris:
             yield from self.return_uri(uri_path)
 

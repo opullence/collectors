@@ -2,9 +2,7 @@ import re
 
 from opulence.collectors.bases import ScriptCollector
 from opulence.common.plugins.dependencies import BinaryDependency
-from opulence.facts.domain import Domain
-from opulence.facts.ip import IPv4
-from opulence.facts.port import Port
+from opulence.facts import Domain, IPv4, Port
 
 
 class NmapTCPConnect(ScriptCollector):

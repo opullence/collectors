@@ -1,9 +1,9 @@
 import re
 
 from opulence.collectors.bases import ScriptCollector
-from opulence.common.plugins.dependencies import BinaryDependency
-from opulence.facts import Username, GitRepository, Organization, Email
 from opulence.common.passwordstore import Store
+from opulence.common.plugins.dependencies import BinaryDependency
+from opulence.facts import Email, GitRepository, Organization, Username
 
 
 class Zen(ScriptCollector):
@@ -31,12 +31,16 @@ class Zen(ScriptCollector):
         cmd = [
             self._script_path_,
             "-u",
-            Store().get_decrypted_password("opulence/github_user")
+            Store().get_decrypted_password("opulence/github_user"),
         ]
         if isinstance(fact, Username):
             cmd.append(fact.name.value)
         elif isinstance(fact, GitRepository):
-            url = fact.url.value[:-4] if fact.url.value.endswith(".git") else fact.url.value
+            url = (
+                fact.url.value[:-4]
+                if fact.url.value.endswith(".git")
+                else fact.url.value
+            )
             cmd.append(url)
         elif isinstance(fact, Organization):
             cmd.extend(["--org", fact.name.value])

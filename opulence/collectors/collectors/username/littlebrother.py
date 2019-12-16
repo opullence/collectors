@@ -2,7 +2,7 @@ import re
 
 from opulence.collectors.bases import ScriptCollector
 from opulence.common.plugins.dependencies import BinaryDependency
-from opulence.facts import URI, Username, Email
+from opulence.facts import URI, Email, Username
 
 
 class LittleBrother(ScriptCollector):
@@ -27,21 +27,19 @@ class LittleBrother(ScriptCollector):
     _script_path_ = "LittleBrother"
 
     def launch(self, fact):
-        command = [
-            self._script_path_
-        ]
+        command = [self._script_path_]
         if isinstance(fact, Username):
             stdin = [
-            "1\n2\n{}\n".format(fact.name.value),
-            "1\n10\n{}\n".format(fact.name.value)
-        ]
+                "1\n2\n{}\n".format(fact.name.value),
+                "1\n10\n{}\n".format(fact.name.value),
+            ]
         elif isinstance(fact, Email):
-            stdin = [
-            "1\n10\n{}\n".format(fact.address.value)
-        ]
+            stdin = ["1\n10\n{}\n".format(fact.address.value)]
 
         for i in stdin:
-            yield from self.parse_result(self._exec(*command, stdin=i, ignore_error=True))
+            yield from self.parse_result(
+                self._exec(*command, stdin=i, ignore_error=True)
+            )
 
     def parse_result(self, result):
         urls = re.findall("\\[\\+\\] Possible connection: (.*)\\n", result)

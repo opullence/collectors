@@ -1,5 +1,4 @@
 import re
-
 import time
 from subprocess import PIPE, Popen
 
@@ -52,13 +51,12 @@ class ScriptCollector(BaseCollector):
 
     @staticmethod
     def _exec(*cmd, stdin=None, ignore_error=False):
-
         def return_stdout(process_pipe):
             stdout, stderr = (x.strip().decode() for x in process_pipe.communicate())
             if not ignore_error and process_pipe.returncode:
                 raise PluginRuntimeError(stderr)
             return stdout
-            
+
         print("ScriptCollector: launch command {}".format(cmd))
         if stdin is not None:
             out = Popen(cmd, stdin=PIPE, stdout=PIPE, stderr=PIPE)

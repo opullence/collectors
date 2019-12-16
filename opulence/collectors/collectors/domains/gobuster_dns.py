@@ -4,7 +4,7 @@ from opulence.collectors.bases.scriptCollector import ScriptCollector
 from opulence.common.plugins.dependencies import (
     BinaryDependency, FileDependency
 )
-from opulence.facts.domain import Domain
+from opulence.facts import Domain
 
 
 class GobusterDNS(ScriptCollector):
