@@ -15,11 +15,21 @@ def _random_input(input):
 
 def _gen_input(input_type):
     if input_type == facts.Domain:
-        return facts.Domain(fqdn="google.fr")
+        return facts.Domain(fqdn="wavely.fr")
     elif input_type == facts.IPv4:
-        return facts.IPv4(address="216.58.198.195")
+        return facts.IPv4(address="31.3.142.135")
     elif input_type == facts.Person:
         return facts.Person(firstname="John", lastname="Snow")
+    elif input_type == facts.Phone:
+        return facts.Phone(number="1-855-684-5463")
+    elif input_type == facts.Username:
+        return facts.Username(name="jurelou")
+    elif input_type == facts.Email:
+        return facts.Email(address="test@gmail.com")
+    elif input_type == facts.GitRepository:
+        return facts.GitRepository(url="https://github.com/redcanaryco/atomic-red-team")
+    elif input_type == facts.Organization:
+        return facts.Organization(name="wavely")
     else:
         return _random_input(input_type)
 
@@ -39,8 +49,9 @@ def _exec_collector(collector):
         if result.output:
             for i in result.output:
                 print("@-----------------\n@\t->", i)
-                for f in i.get_fields():
-                    print("@\t\t->", f, ":", getattr(i, f).value)
+                if i:
+                    for f in i.get_fields():
+                        print("@\t\t->", f, ":", getattr(i, f).value)
 
 
 def print_state(cls):

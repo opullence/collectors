@@ -48,14 +48,17 @@ class BaseCollector(BasePlugin):
     def _sanitize_output(output):
         if is_iterable(output):
             output = list(output)
+        if not is_list(output):
+            output = [output]
+        output = list(filter(None, output))
         return output
         # return [ out for out in output if isinstance(o, BaseFact) and o.is_valid()]
 
-    def run(self, facts):
-        result = Result(
-            input=facts, collector_data=self.get_info(), status=StatusCode.ready
-        )
+    def run(self, result):
+        result.collector_data = self.get_info()
         ret, state = self._sanitize_input(result.input.get(force_array=True))
+        result.status = StatusCode.ready
+
         if ret:
             result.status = state
             return result

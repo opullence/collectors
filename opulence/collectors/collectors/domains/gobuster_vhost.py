@@ -1,24 +1,23 @@
 import re
 
+from opulence.collectors.bases import ScriptCollector
 from opulence.common.plugins.dependencies import (
     BinaryDependency, FileDependency
 )
-from opulence.facts.domain import Domain
-
-from ..bases.scriptCollector import ScriptCollector
+from opulence.facts import Domain
 
 
-class GobusterDNS(ScriptCollector):
+class GobusterVhost(ScriptCollector):
     ###############
     # Plugin attributes
     ###############
-    _name_ = "GoBuster DNS"
-    _description_ = "DNS subdomains brute force using gobuster."
+    _name_ = "GoBuster Vhost"
+    _description_ = "Virtual host brute force using gobuster."
     _author_ = "Louis"
     _version_ = 1
     _dependencies_ = [
         BinaryDependency("gobuster"),
-        FileDependency("/srv/wordlists/directories-big.txt"),
+        FileDependency("/srv/wordlists/subdomains-1000.txt"),
     ]
 
     ###############
@@ -31,19 +30,18 @@ class GobusterDNS(ScriptCollector):
     ###############
     _script_path_ = "gobuster"
     _script_arguments_ = [
-        "dns",
-        "--domain",
+        "vhost",
+        "--url",
         "$Domain.fqdn$",
         "--wordlist",
-        "/srv/wordlists/directories-big.txt",
+        "/srv/wordlists/subdomains-1000.txt",
         "--quiet",
         "--noprogress",
-        "--showips",
+        "--insecuressl",
     ]
 
     def parse_result(self, result):
-        found_domains = re.findall("Found: (.*) \\[(.*)\\]\\n", result)
+        found_domains = re.findall("Found: (.*) \\(Status:", result)
         if found_domains:
             for f in found_domains:
-                domain, ip = f
-                yield Domain(fqdn=domain, ip=ip)
+                yield Domain(fqdn=f)

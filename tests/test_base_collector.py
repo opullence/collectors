@@ -4,7 +4,7 @@ from opulence.collectors.bases import BaseCollector
 from opulence.common.job import StatusCode
 from opulence.common.patterns import Composite
 from opulence.common.plugins import exceptions
-from opulence.facts.person import Person
+from opulence.facts import Person
 
 
 class TestBaseCollector(unittest.TestCase):
